@@ -8,16 +8,21 @@ class MovieHelper {
   static const _languageUrl = "https://api.themoviedb.org/3/configuration/languages";
   static const _genreUrl = "https://api.themoviedb.org/3/genre/movie/list";
   static const _key = "8c5021c1d9e9c7c1a2b0b2bd14b96f3d";
+  List<String> genres = [];
   String language;
   String page;
 
   MovieHelper({this.language = "pt", this.page = "1"});
 
-  Future<List<Movie>> getMovies({String genre = ""}) async {
+  Future<List<Movie>> getMovies() async {
+    String genresString = "";
+    for (var element in genres) {
+      genresString = "$genresString$element,";
+    }
     String args = "?api_key=$_key"
                   "&language=$language"
                   "&page=$page"
-                  "&with_genres=$genre";
+                  "&with_genres=$genresString";
                   
     http.Response response = await http.get(Uri.parse("$_discoverUrl$args"));
     List<Movie> movies = [];

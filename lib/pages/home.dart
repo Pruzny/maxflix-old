@@ -11,13 +11,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _toggleController = ToggleController();
+    final movieHelper = MovieHelper();
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    final movieHelper = MovieHelper();
-    final toggleController = ToggleController();
 
     return Scaffold(
       body: SafeArea(
@@ -50,6 +49,7 @@ class _HomeState extends State<Home> {
   SizedBox createFilters(Map<String, String> genres) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    List<String> keys = List.from(genres.keys);
 
     return SizedBox(
       height: height * 0.06,
@@ -57,17 +57,24 @@ class _HomeState extends State<Home> {
         scrollDirection: Axis.horizontal,
         itemCount: genres.length,
         itemBuilder: (context, index) {
-          List<String> keys = List.from(genres.keys);
+          bool isActive = _toggleController.filter.contains(index);
 
           return Container(
             padding: const EdgeInsets.all(6),
             child: ElevatedButton(
               onPressed: () {
                 // Select filter
-                _toggleController.filter = index;
-                setState(() {});
+                setState(() {
+                  if (isActive) {
+                    _toggleController.filter.remove(index);
+                    movieHelper.genres.remove(genres[keys[index]]);
+                  } else {
+                    _toggleController.filter.add(index);
+                    movieHelper.genres.add(genres[keys[index]]!);
+                  }
+                });
               },
-              style: _toggleController.filter == index ? ButtonStyle(
+              style: isActive ? ButtonStyle(
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(width)
                 ))
@@ -84,7 +91,7 @@ class _HomeState extends State<Home> {
                   style: TextStyle(
                     fontWeight: FontWeight.normal,
                     fontSize: height*0.03,
-                    color: _toggleController.filter == index ? Colors.white : Theme.of(context).primaryColor
+                    color: isActive ? Colors.white : Theme.of(context).primaryColor
                   ),
                 ),
               ),
@@ -97,8 +104,7 @@ class _HomeState extends State<Home> {
 }
 
 class ToggleController {
-  int filter;
-  int page;
-
-  ToggleController({this.filter = 0, this.page = 0});
+  List<int> filter = [];
+  
+  ToggleController();
 }
