@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 class Movie {
   bool adult;
   String backdropPath;
-  List<int> genreIds;
+  List<dynamic> genreIds;
   int id;
   String originalLanguage;
   String originalTitle;
@@ -37,18 +35,39 @@ class Movie {
     return Movie(
       adult: map["adult"] as bool,
       backdropPath: map["backdrop_path"] as String,
-      genreIds: map["genre_ids"] as List<int>,
+      genreIds: map["genre_ids"] as List<dynamic>,
       id: map["id"] as int,
       originalLanguage: map["original_language"] as String,
       originalTitle: map["original_title"] as String,
       overview: map["overview"] as String,
-      popularity: map["popularity"] as double,
+      popularity: double.tryParse("${map["popularity"]}")!,
       posterPath: map["poster_path"] as String,
-      releaseDate: map["release_date"] as String,
+      releaseDate: map["release_date"],
       title: map["title"] as String,
       video: map["video"] as bool,
-      voteAverage: map["vote_average"] as double,
+      voteAverage: double.tryParse("${map["vote_average"]}")!,
       voteCount: map["vote_count"] as int,
     );
+  }
+
+  @override
+  String toString() {
+    return 
+    """
+adult: $adult,
+backdropPath: $backdropPath,
+genreIds: $genreIds,
+id: $id,
+originalLanguage: $originalLanguage,
+originalTitle: $originalTitle
+overview: $overview,
+popularity: $popularity,
+posterPath: $posterPath,
+releaseDate: $releaseDate,
+title: $title,
+video: $video,
+voteAverage: $voteAverage,
+voteCount: $voteCount,
+""";
   }
 }
