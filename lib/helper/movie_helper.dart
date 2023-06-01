@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:maxflix/model/movie.dart';
 
 class MovieHelper {
-  static MovieHelper? _instance;
   static const _discoverUrl = "https://api.themoviedb.org/3/discover/movie";
   static const _languageUrl = "https://api.themoviedb.org/3/configuration/languages";
   static const _genreUrl = "https://api.themoviedb.org/3/genre/movie/list";
