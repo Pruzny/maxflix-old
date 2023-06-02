@@ -11,7 +11,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _toggleController = ToggleController();
-    final movieHelper = MovieHelper();
+  final movieHelper = MovieHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +63,13 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.all(6),
             child: ElevatedButton(
               onPressed: () {
-                // Select filter
                 setState(() {
                   if (isActive) {
                     _toggleController.filter.remove(index);
-                    movieHelper.genres.remove(genres[keys[index]]);
+                    movieHelper.genresQuery.remove(genres[keys[index]]);
                   } else {
                     _toggleController.filter.add(index);
-                    movieHelper.genres.add(genres[keys[index]]!);
+                    movieHelper.genresQuery.add(genres[keys[index]]!);
                   }
                 });
               },

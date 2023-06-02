@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -8,15 +10,20 @@ class MovieHelper {
   static const _languageUrl = "https://api.themoviedb.org/3/configuration/languages";
   static const _genreUrl = "https://api.themoviedb.org/3/genre/movie/list";
   static const _key = "8c5021c1d9e9c7c1a2b0b2bd14b96f3d";
-  List<String> genres = [];
+  List<String> genresQuery = [];
   String language;
   String page;
+  Timer? _debounce;
+  List<Movie> movies = [];
+  Map<String, String> languages = {};
+  Map<String, String> genres = {};
+  bool loadBase = false;
 
   MovieHelper({this.language = "pt", this.page = "1"});
 
-  Future<List<Movie>> getMovies() async {
+  Future<List<Movie>> _getMovies() async {
     String genresString = "";
-    for (var element in genres) {
+    for (var element in genresQuery) {
       genresString = "$genresString$element,";
     }
     String args = "?api_key=$_key"
@@ -37,7 +44,7 @@ class MovieHelper {
     return movies;
   }
 
-  Future<Map<String, String>> getLanguages() async {
+  Future<Map<String, String>> _getLanguages() async {
     String args = "?api_key=$_key";
     http.Response response = await http.get(Uri.parse("$_languageUrl$args"));
     Map<String, String> languages = {};
@@ -54,7 +61,7 @@ class MovieHelper {
     return languages;
   }
 
-  Future<Map<String, String>> getGenres() async {
+  Future<Map<String, String>> _getGenres() async {
     String args = "?api_key=$_key&language=$language";
     http.Response response = await http.get(Uri.parse("$_genreUrl$args"));
     Map<String, String> genres = {};
@@ -69,9 +76,17 @@ class MovieHelper {
   }
 
   Future<Map<String, dynamic>> loadData() async {
-    List<Movie> movies = await getMovies();
-    Map<String, String> languages = await getLanguages();
-    Map<String, String> genres = await getGenres();
+    if (!loadBase) {
+      languages = await _getLanguages();
+      genres = await _getGenres();
+      loadBase = true;
+    }
+    if (_debounce?.isActive ?? false) {
+      _debounce!.cancel();
+    }
+    _debounce = Timer(const Duration(milliseconds: 500), () async {
+      movies = await _getMovies();
+    });
 
     return {
       "movies": movies,
