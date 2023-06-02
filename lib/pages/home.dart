@@ -10,6 +10,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final _posterPath = "https://image.tmdb.org/t/p/w500";
   final _toggleController = ToggleController();
   final movieHelper = MovieHelper();
 
@@ -34,7 +35,7 @@ class _HomeState extends State<Home> {
                 children: [
                   const Center(child: Text("Search bar")),
                   createFilters(genres),
-                  const Center(child: Text("Movies")),
+                  createMovies(movies),
                 ]
               );
             }
@@ -52,7 +53,7 @@ class _HomeState extends State<Home> {
     List<String> keys = List.from(genres.keys);
 
     return SizedBox(
-      height: height * 0.06,
+      height: height * 0.065,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: genres.length,
@@ -92,6 +93,94 @@ class _HomeState extends State<Home> {
                     fontSize: height*0.03,
                     color: isActive ? Colors.white : Theme.of(context).primaryColor
                   ),
+                ),
+              ),
+            ),
+          );
+        }
+      ),
+    );
+  }
+
+  SizedBox createMovies(List<Movie> movies) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
+    return SizedBox(
+      height: height * 0.76,
+      width: width * 0.9,
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: movies.length,
+        itemBuilder: (context, index) {
+          Movie movie = movies[index];
+
+          return Container(
+            padding: const EdgeInsets.only(bottom: 24),
+            child: Card(
+              shadowColor: Colors.transparent,
+              clipBehavior: Clip.hardEdge,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(width*0.05)
+              ),
+              child: InkWell(
+                onTap: () {
+                  //
+                },
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomStart,
+                  children: [
+                    SizedBox(
+                      width: width * 0.9,
+                      height: width * 1.30,
+                      child: ShaderMask(
+                        shaderCallback: (rect) {
+                          return const LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [Colors.black, Colors.transparent],
+                          ).createShader(Rect.fromLTRB(rect.width * 3/5, rect.height * 2/5, rect.width, rect.height));
+                        },
+                        blendMode: BlendMode.darken,
+                        child: Image.network(
+                          "$_posterPath${movie.posterPath}",
+                          fit: BoxFit.fitWidth,
+                        )
+                      ),
+                    ),
+                    // Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),child: Image.network("$_posterPath${movie.posterPath}", fit: BoxFit.fill)),
+                    Container(
+                      width: width,
+                      padding: EdgeInsets.only(left: width * 0.08, right: width * 0.08, top: height * 0.08, bottom: height * 0.08),
+                      child: Column(
+                        children: [
+                          Text(
+                            movie.title.toUpperCase(),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: height*0.03,
+                              color: Colors.white
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: height*0.03),
+                            child: Text(
+                              movieHelper.getCardGenres(movie),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: height*0.03,
+                                color: Colors.white
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      ),
+                  ],
                 ),
               ),
             ),

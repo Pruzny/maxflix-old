@@ -17,6 +17,8 @@ class MovieHelper {
   List<Movie> movies = [];
   Map<String, String> languages = {};
   Map<String, String> genres = {};
+  Map<String, String> reversedGenres = {};
+
   bool loadBase = false;
 
   MovieHelper({this.language = "pt", this.page = "1"});
@@ -77,21 +79,48 @@ class MovieHelper {
 
   Future<Map<String, dynamic>> loadData() async {
     if (!loadBase) {
-      languages = await _getLanguages();
-      genres = await _getGenres();
+      languages.clear();
+      languages.addAll(await _getLanguages());
+      genres.clear();
+      genres.addAll(await _getGenres());
+      reversedGenres.clear();
+      genres.forEach((key, value) {
+        reversedGenres[value] = key;
+      });
       loadBase = true;
     }
     if (_debounce?.isActive ?? false) {
       _debounce!.cancel();
+    } else {
+      movies.clear();
+      movies.addAll(await _getMovies());
+      _debounce = Timer(const Duration(milliseconds: 500), () async {});
     }
-    _debounce = Timer(const Duration(milliseconds: 500), () async {
-      movies = await _getMovies();
-    });
 
     return {
       "movies": movies,
       "languages": languages,
       "genres": genres,
     };
+  }
+
+  String getCardGenres(Movie movie) {
+    // if (genresQuery.length > 1) {
+    //   return "${reversedGenres[genresQuery[0].toString()]} - ${reversedGenres[genresQuery[1].toString()]}";
+    // }
+
+    // if (genresQuery.isNotEmpty) {
+    //   return "${reversedGenres[genresQuery[0]]}";
+    // }
+
+    if (movie.genreIds.length > 1) {
+      return "${reversedGenres[movie.genreIds[0].toString()]} - ${reversedGenres[movie.genreIds[1].toString()]}";
+    }
+
+    if (movie.genreIds.isNotEmpty) {
+      return "${reversedGenres[movie.genreIds[0]]}";
+    }
+
+    return "";
   }
 }
