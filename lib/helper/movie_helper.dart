@@ -6,13 +6,15 @@ import 'dart:convert';
 import 'package:maxflix/model/movie.dart';
 
 class MovieHelper {
+  static final _instance = MovieHelper._constructor();
   static const _discoverUrl = "https://api.themoviedb.org/3/discover/movie";
   static const _languageUrl = "https://api.themoviedb.org/3/configuration/languages";
   static const _genreUrl = "https://api.themoviedb.org/3/genre/movie/list";
+  static const _movieUrl = "https://api.themoviedb.org/3/movie/";
   static const _key = "8c5021c1d9e9c7c1a2b0b2bd14b96f3d";
   List<String> genresQuery = [];
-  String language;
-  String page;
+  String language = "pt";
+  String page = "1";
   Timer? _debounce;
   List<Movie> movies = [];
   Map<String, String> languages = {};
@@ -21,7 +23,34 @@ class MovieHelper {
 
   bool loadBase = false;
 
-  MovieHelper({this.language = "pt", this.page = "1"});
+  MovieHelper._constructor();
+
+  factory MovieHelper() {
+    return _instance;
+  }
+
+  Future<bool> getMovieData(Movie movie) async {
+    String args = "?api_key=$_key";
+    http.Response responseData = await http.get(Uri.parse("$_movieUrl${movie.id}$args"));
+    if (responseData.statusCode.toString() == '200') {
+      Map<String, dynamic> data = json.decode(responseData.body);
+      http.Response responseCredits = await http.get(Uri.parse("$_movieUrl/${movie.id}/credits$args"));
+      if (responseCredits.statusCode.toString() == '200') {
+        Map<String, dynamic> creditsMap = json.decode(responseCredits.body);
+        data.addAll(creditsMap);
+
+        movie.runtime = data["runtime"];
+        movie.budget = data["budget"];
+        movie.productionCompanies = data["production_companies"];
+        movie.cast = data["cast"];
+        movie.crew = data["crew"];
+
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   Future<List<Movie>> _getMovies() async {
     String genresString = "";
@@ -118,7 +147,7 @@ class MovieHelper {
     }
 
     if (movie.genreIds.isNotEmpty) {
-      return "${reversedGenres[movie.genreIds[0]]}";
+      return "${reversedGenres[movie.genreIds[0].toString()]}";
     }
 
     return "";

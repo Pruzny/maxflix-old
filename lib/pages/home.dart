@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maxflix/helper/movie_helper.dart';
 import 'package:maxflix/model/movie.dart';
+import 'package:maxflix/pages/movie_page.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -125,7 +126,10 @@ class _HomeState extends State<Home> {
               ),
               child: InkWell(
                 onTap: () {
-                  //
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder:(context) => MoviePage(movie: movie, posterPath: _posterPath)),
+                  );
                 },
                 child: Stack(
                   alignment: AlignmentDirectional.bottomStart,
@@ -148,7 +152,6 @@ class _HomeState extends State<Home> {
                         )
                       ),
                     ),
-                    // Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),child: Image.network("$_posterPath${movie.posterPath}", fit: BoxFit.fill)),
                     Container(
                       width: width,
                       padding: EdgeInsets.only(left: width * 0.08, right: width * 0.08, top: height * 0.08, bottom: height * 0.08),

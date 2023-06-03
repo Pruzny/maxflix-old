@@ -13,6 +13,12 @@ class Movie {
   bool video;
   double voteAverage;
   int voteCount;
+  int? runtime;
+  int? budget;
+  List<dynamic> productionCompanies = [];
+  List<dynamic> cast = [];
+  List<dynamic> crew = [];
+
 
   Movie({
     required this.adult,
@@ -28,7 +34,7 @@ class Movie {
     required this.title,
     required this.video,
     required this.voteAverage,
-    required this.voteCount
+    required this.voteCount,
   });
 
   factory Movie.fromMap(Map<String, dynamic> map) {
