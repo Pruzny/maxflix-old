@@ -14,6 +14,7 @@ class _HomeState extends State<Home> {
   final _posterPath = "https://image.tmdb.org/t/p/w500";
   final _toggleController = ToggleController();
   final movieHelper = MovieHelper();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class _HomeState extends State<Home> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(left: width*0.04, top: height*0.04, right: width*0.04, bottom: height*0.04),
@@ -28,20 +30,49 @@ class _HomeState extends State<Home> {
             future: movieHelper.loadData(),
             builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<Movie> movies = snapshot.data!["movies"];
-              Map<String, String> languages = snapshot.data!["languages"];
-              Map<String, String> genres = snapshot.data!["genres"];
+              List<Movie> movies = movieHelper.movies;
+              Map<String, String> languages = movieHelper.languages;
+              Map<String, String> genres = movieHelper.genres;
               
               return Column(
                 children: [
-                  const Center(child: Text("Search bar")),
+                  SearchBar(
+                    controller: _searchController,
+                    hintText: "Pesquise filmes",
+                    hintStyle: MaterialStateProperty.all(TextStyle(
+                      color: Colors.grey.shade700,
+                      fontWeight: FontWeight.w400,
+                      fontSize: height * 0.03,
+                    )),
+                    textStyle: MaterialStateProperty.all(TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                      fontSize: height * 0.03,
+                    )),
+                    onChanged: (value) {
+                      setState(() {
+                        movieHelper.name = value;
+                        movieHelper.page = 1;
+                      });
+                    },
+                    backgroundColor: MaterialStateProperty.all(Colors.grey.shade200),
+                    padding: MaterialStateProperty.all(EdgeInsets.only(left: width * 0.05)),
+                    leading: Icon(
+                      Icons.search,
+                      size: height * 0.035,
+                      color: Colors.grey.shade700,
+                    ),
+                    shadowColor: MaterialStateProperty.all(Colors.transparent),
+                  ),
+                  Padding(padding: EdgeInsets.all(height*0.005)),
                   createFilters(genres),
-                  createMovies(movies),
+                  Padding(padding: EdgeInsets.all(height * 0.005)),
+                  SingleChildScrollView(child: createMovies(movies)),
                 ]
               );
             }
             
-            return const Center(child: Text("Loading..."));
+            return const Center(child: CircularProgressIndicator());
           }),
         ),
       )
@@ -66,6 +97,7 @@ class _HomeState extends State<Home> {
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
+                  movieHelper.page = 1;
                   if (isActive) {
                     _toggleController.filter.remove(index);
                     movieHelper.genresQuery.remove(genres[keys[index]]);
@@ -108,12 +140,16 @@ class _HomeState extends State<Home> {
     double height = MediaQuery.of(context).size.height;
 
     return SizedBox(
-      height: height * 0.76,
+      height: height * 0.7,
       width: width * 0.9,
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: movies.length,
         itemBuilder: (context, index) {
+          if (index == movies.length) {
+            return const Center(child: Text("Loading..."));
+          }
+
           Movie movie = movies[index];
 
           return Container(
@@ -146,10 +182,19 @@ class _HomeState extends State<Home> {
                           ).createShader(Rect.fromLTRB(rect.width * 3/5, rect.height * 2/5, rect.width, rect.height));
                         },
                         blendMode: BlendMode.darken,
-                        child: Image.network(
+                        child: movie.posterPath != null ? Image.network(
                           "$_posterPath${movie.posterPath}",
                           fit: BoxFit.fitWidth,
-                        )
+                        ) : Container(
+                          color: Colors.black,
+                          child: Center(child: Text(
+                            "No image",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: width * 0.04,
+                            ),
+                          )),
+                        ),
                       ),
                     ),
                     Container(

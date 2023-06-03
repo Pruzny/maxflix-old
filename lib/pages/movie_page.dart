@@ -357,7 +357,7 @@ class _MoviePageState extends State<MoviePage> {
                   );
                 }
 
-                return const Text("Loading...");
+                return const CircularProgressIndicator();
               }
             )
           )
@@ -433,7 +433,7 @@ class _MoviePageState extends State<MoviePage> {
       text = names.first;
 
       if (names.length > 1) {
-        for (String name in names.sublist(1, names.length < 5 ? names.length : 5)) {
+        for (String name in names.sublist(1, names.length < maxNames ? names.length : maxNames)) {
           text = "$text, $name";
         }
       }

@@ -48,7 +48,7 @@ class Movie {
       overview: map["overview"] as String,
       popularity: double.tryParse("${map["popularity"]}")!,
       posterPath: map["poster_path"] as String?,
-      releaseDate: map["release_date"],
+      releaseDate: map["release_date"] ?? "",
       title: map["title"] as String,
       video: map["video"] as bool,
       voteAverage: double.tryParse("${map["vote_average"]}")!,

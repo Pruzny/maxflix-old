@@ -8,18 +8,22 @@ import 'package:maxflix/model/movie.dart';
 class MovieHelper {
   static final _instance = MovieHelper._constructor();
   static const _discoverUrl = "https://api.themoviedb.org/3/discover/movie";
+  static const _searchUrl = "https://api.themoviedb.org/3/search/movie";
   static const _languageUrl = "https://api.themoviedb.org/3/configuration/languages";
   static const _genreUrl = "https://api.themoviedb.org/3/genre/movie/list";
   static const _movieUrl = "https://api.themoviedb.org/3/movie/";
   static const _key = "8c5021c1d9e9c7c1a2b0b2bd14b96f3d";
+  static const maxMovies = 20;
   List<String> genresQuery = [];
   String language = "pt";
-  String page = "1";
+  int page = 1;
   Timer? _debounce;
   List<Movie> movies = [];
   Map<String, String> languages = {};
   Map<String, String> genres = {};
   Map<String, String> reversedGenres = {};
+  String name = "";
+  bool hasNextPage = false;
 
   bool loadBase = false;
 
@@ -52,17 +56,19 @@ class MovieHelper {
     return false;
   }
 
-  Future<List<Movie>> _getMovies() async {
+  Future<List<Movie>> _getMovies({required int moviePage}) async {
     String genresString = "";
     for (var element in genresQuery) {
       genresString = "$genresString$element,";
     }
     String args = "?api_key=$_key"
                   "&language=$language"
-                  "&page=$page"
+                  "&page=$moviePage"
                   "&with_genres=$genresString";
                   
-    http.Response response = await http.get(Uri.parse("$_discoverUrl$args"));
+    String link = name == "" ? "$_discoverUrl$args" : "$_searchUrl$args&query=$name";
+
+    http.Response response = await http.get(Uri.parse(link));
     List<Movie> movies = [];
 
     if (response.statusCode.toString() == '200') {
@@ -106,7 +112,7 @@ class MovieHelper {
     return genres;
   }
 
-  Future<Map<String, dynamic>> loadData() async {
+  Future<Map<String, dynamic>> loadData({int moviePage = 1}) async {
     if (!loadBase) {
       languages.clear();
       languages.addAll(await _getLanguages());
@@ -121,8 +127,16 @@ class MovieHelper {
     if (_debounce?.isActive ?? false) {
       _debounce!.cancel();
     } else {
-      movies.clear();
-      movies.addAll(await _getMovies());
+      if (moviePage == 1) {
+        movies.clear();
+      }
+      List<Movie> newMovies = await _getMovies(moviePage: moviePage);
+      movies.addAll(newMovies);
+      if (newMovies.length < maxMovies) {
+        hasNextPage = false;
+      } else {
+        hasNextPage = true;
+      }
       _debounce = Timer(const Duration(milliseconds: 500), () async {});
     }
 
