@@ -144,10 +144,25 @@ class _HomeState extends State<Home> {
       width: width * 0.9,
       child: ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: movies.length,
+        itemCount: movies.length + 1,
         itemBuilder: (context, index) {
-          if (index == movies.length) {
-            return const Center(child: Text("Loading..."));
+          int length = movies.length;
+          if (index == length) {
+            return movieHelper.isLoading ? const Center(child: CircularProgressIndicator())
+            : movies.isNotEmpty ? Center(child: ElevatedButton(
+              onPressed: () async {
+                movieHelper.page++;
+                setState(() {});
+              },
+              child: const Text("Load More"),
+            )) : Center(
+              child: Text(
+                "No movies found.",
+                style: TextStyle(
+                  fontSize: width * 0.05
+                ),
+              ),
+            ) ;
           }
 
           Movie movie = movies[index];

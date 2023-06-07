@@ -24,8 +24,8 @@ class MovieHelper {
   Map<String, String> reversedGenres = {};
   String name = "";
   bool hasNextPage = false;
-
   bool loadBase = false;
+  bool isLoading = false;
 
   MovieHelper._constructor();
 
@@ -56,14 +56,14 @@ class MovieHelper {
     return false;
   }
 
-  Future<List<Movie>> _getMovies({required int moviePage}) async {
+  Future<List<Movie>> _getMovies() async {
     String genresString = "";
     for (var element in genresQuery) {
       genresString = "$genresString$element,";
     }
     String args = "?api_key=$_key"
                   "&language=$language"
-                  "&page=$moviePage"
+                  "&page=$page"
                   "&with_genres=$genresString";
                   
     String link = name == "" ? "$_discoverUrl$args" : "$_searchUrl$args&query=$name";
@@ -112,7 +112,7 @@ class MovieHelper {
     return genres;
   }
 
-  Future<Map<String, dynamic>> loadData({int moviePage = 1}) async {
+  Future<Map<String, dynamic>> loadData() async {
     if (!loadBase) {
       languages.clear();
       languages.addAll(await _getLanguages());
@@ -124,20 +124,21 @@ class MovieHelper {
       });
       loadBase = true;
     }
-    if (_debounce?.isActive ?? false) {
-      _debounce!.cancel();
-    } else {
-      if (moviePage == 1) {
+    if (!(_debounce?.isActive ?? false)) {
+      isLoading = true;
+      if (page == 1) {
         movies.clear();
       }
-      List<Movie> newMovies = await _getMovies(moviePage: moviePage);
+      List<Movie> newMovies = await _getMovies();
       movies.addAll(newMovies);
+      print("page: $page | new: ${newMovies.length} | max: $maxMovies");
       if (newMovies.length < maxMovies) {
         hasNextPage = false;
       } else {
         hasNextPage = true;
       }
       _debounce = Timer(const Duration(milliseconds: 500), () async {});
+      isLoading = false;
     }
 
     return {
