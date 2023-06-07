@@ -73,9 +73,18 @@ class _MoviePageState extends State<MoviePage> {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(width*0.03),
-                            child: Image.network(
+                            child: movie.posterPath != null ? Image.network(
                               "$posterPath${movie.posterPath}",
                               fit: BoxFit.fitWidth,
+                            ) : Container(
+                              color: Colors.black,
+                              child: Center(child: Text(
+                                "No image",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: width * 0.04,
+                                ),
+                              )),
                             ),
                           ),
                         ),
