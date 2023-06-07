@@ -15,7 +15,7 @@ class MovieHelper {
   static const _key = "8c5021c1d9e9c7c1a2b0b2bd14b96f3d";
   static const maxMovies = 20;
   List<String> genresQuery = [];
-  String language = "pt";
+  String language = "pt-BR";
   int page = 1;
   List<Movie> movies = [];
   Map<String, String> languages = {};

@@ -24,6 +24,7 @@ class _MoviePageState extends State<MoviePage> {
     List<String> splitDate = movie.releaseDate.split("-");
     String releaseYear = splitDate.isNotEmpty ? splitDate[0] : "-";
     final currencyFormat = NumberFormat.simpleCurrency();
+    final averageFormat = NumberFormat.decimalPatternDigits(decimalDigits: 1);
 
     return Scaffold(
       floatingActionButton: Padding(
@@ -94,7 +95,7 @@ class _MoviePageState extends State<MoviePage> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              "${movie.voteAverage}",
+                              averageFormat.format(movie.voteAverage),
                               style: TextStyle(
                                 fontSize: width*0.1,
                                 fontWeight: FontWeight.w600,
