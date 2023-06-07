@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(left: width*0.04, top: height*0.04, right: width*0.04, bottom: height*0.04),
+          padding: EdgeInsets.only(left: width*0.04, top: height*0.02, right: width*0.04, bottom: height*0.04),
           child: FutureBuilder(
             future: movieHelper.loadData(),
             builder: (context, snapshot) {
@@ -38,59 +38,73 @@ class _HomeState extends State<Home> {
               Map<String, String> languages = movieHelper.languages;
               Map<String, String> genres = movieHelper.genres;
               
-              return Column(
-                children: [
-                  SearchBar(
-                    controller: _searchController,
-                    hintText: "Pesquise filmes",
-                    hintStyle: MaterialStateProperty.all(TextStyle(
-                      color: Colors.grey.shade700,
-                      fontWeight: FontWeight.w400,
-                      fontSize: height * 0.03,
-                    )),
-                    textStyle: MaterialStateProperty.all(TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400,
-                      fontSize: height * 0.03,
-                    )),
-                    onChanged: (value) {
-                      if (!(_debounce?.isActive ?? false)) {
-                        _debounce = Timer(const Duration(milliseconds: 500), () async {
-                          setState(() {
-                            movieHelper.name = value;
-                            movieHelper.page = 1;
-                          });
-                        });
-                      }
-                    },
-                    backgroundColor: MaterialStateProperty.all(Colors.grey.shade200),
-                    padding: MaterialStateProperty.all(EdgeInsets.only(left: width * 0.05)),
-                    leading: Icon(
-                      Icons.search,
-                      size: height * 0.035,
-                      color: Colors.grey.shade700,
+              return SizedBox(
+                width: width * 0.9,
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Filmes",
+                        style: TextStyle(
+                          fontSize: height * 0.03,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
-                    shadowColor: MaterialStateProperty.all(Colors.transparent),
-                    trailing: _searchController.text.isNotEmpty ? [IconButton(
-                      onPressed: () {
-                        _searchController.clear();
-                        setState(() {
-                          movieHelper.name = "";
-                          movieHelper.page = 1;
-                        });
+                    Padding(padding: EdgeInsets.all(height*0.01)),
+                    SearchBar(
+                      controller: _searchController,
+                      hintText: "Pesquise filmes",
+                      hintStyle: MaterialStateProperty.all(TextStyle(
+                        color: Colors.grey.shade700,
+                        fontWeight: FontWeight.w400,
+                        fontSize: height * 0.025,
+                      )),
+                      textStyle: MaterialStateProperty.all(TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontSize: height * 0.025,
+                      )),
+                      onChanged: (value) {
+                        if (!(_debounce?.isActive ?? false)) {
+                          _debounce = Timer(const Duration(milliseconds: 500), () async {
+                            setState(() {
+                              movieHelper.name = value;
+                              movieHelper.page = 1;
+                            });
+                          });
+                        }
                       },
-                      icon: Icon(
-                        Icons.clear,
-                        size: height * 0.035,
+                      backgroundColor: MaterialStateProperty.all(Colors.grey.shade200),
+                      padding: MaterialStateProperty.all(EdgeInsets.only(left: width * 0.05)),
+                      leading: Icon(
+                        Icons.search,
+                        size: height * 0.025,
                         color: Colors.grey.shade700,
                       ),
-                    )] : [],
-                  ),
-                  Padding(padding: EdgeInsets.all(height*0.005)),
-                  createFilters(genres),
-                  Padding(padding: EdgeInsets.all(height * 0.005)),
-                  SingleChildScrollView(child: createMovies(movies)),
-                ]
+                      shadowColor: MaterialStateProperty.all(Colors.transparent),
+                      trailing: _searchController.text.isNotEmpty ? [IconButton(
+                        onPressed: () {
+                          _searchController.clear();
+                          setState(() {
+                            movieHelper.name = "";
+                            movieHelper.page = 1;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.clear,
+                          size: height * 0.025,
+                          color: Colors.grey.shade700,
+                        ),
+                      )] : [],
+                    ),
+                    Padding(padding: EdgeInsets.all(height*0.005)),
+                    createFilters(genres),
+                    Padding(padding: EdgeInsets.all(height * 0.005)),
+                    SingleChildScrollView(child: createMovies(movies)),
+                  ]
+                ),
               );
             }
             
@@ -119,7 +133,7 @@ class _HomeState extends State<Home> {
     List<String> keys = List.from(genres.keys);
 
     return SizedBox(
-      height: height * 0.065,
+      height: height * 0.055,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: genres.length,
@@ -157,7 +171,7 @@ class _HomeState extends State<Home> {
                   keys[index],
                   style: TextStyle(
                     fontWeight: FontWeight.normal,
-                    fontSize: height*0.03,
+                    fontSize: height*0.025,
                     color: isActive ? Colors.white : Theme.of(context).primaryColor
                   ),
                 ),
@@ -175,7 +189,6 @@ class _HomeState extends State<Home> {
 
     return SizedBox(
       height: height * 0.7,
-      width: width * 0.9,
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         controller: _scrollController,
