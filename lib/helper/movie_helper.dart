@@ -17,7 +17,6 @@ class MovieHelper {
   List<String> genresQuery = [];
   String language = "pt";
   int page = 1;
-  Timer? _debounce;
   List<Movie> movies = [];
   Map<String, String> languages = {};
   Map<String, String> genres = {};
@@ -124,22 +123,18 @@ class MovieHelper {
       });
       loadBase = true;
     }
-    if (!(_debounce?.isActive ?? false)) {
       isLoading = true;
       if (page == 1) {
         movies.clear();
       }
       List<Movie> newMovies = await _getMovies();
       movies.addAll(newMovies);
-      print("page: $page | new: ${newMovies.length} | max: $maxMovies");
       if (newMovies.length < maxMovies) {
         hasNextPage = false;
       } else {
         hasNextPage = true;
       }
-      _debounce = Timer(const Duration(milliseconds: 500), () async {});
       isLoading = false;
-    }
 
     return {
       "movies": movies,

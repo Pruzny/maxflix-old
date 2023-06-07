@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:maxflix/helper/movie_helper.dart';
 import 'package:maxflix/model/movie.dart';
@@ -13,8 +15,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final _posterPath = "https://image.tmdb.org/t/p/w500";
   final _toggleController = ToggleController();
+  final _scrollController = ScrollController();
+  final _searchController = TextEditingController();
   final movieHelper = MovieHelper();
-  final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +54,14 @@ class _HomeState extends State<Home> {
                       fontSize: height * 0.03,
                     )),
                     onChanged: (value) {
-                      setState(() {
-                        movieHelper.name = value;
-                        movieHelper.page = 1;
-                      });
+                      if (!(_debounce?.isActive ?? false)) {
+                        _debounce = Timer(const Duration(milliseconds: 500), () async {
+                          setState(() {
+                            movieHelper.name = value;
+                            movieHelper.page = 1;
+                          });
+                        });
+                      }
                     },
                     backgroundColor: MaterialStateProperty.all(Colors.grey.shade200),
                     padding: MaterialStateProperty.all(EdgeInsets.only(left: width * 0.05)),
@@ -63,6 +71,20 @@ class _HomeState extends State<Home> {
                       color: Colors.grey.shade700,
                     ),
                     shadowColor: MaterialStateProperty.all(Colors.transparent),
+                    trailing: _searchController.text.isNotEmpty ? [IconButton(
+                      onPressed: () {
+                        _searchController.clear();
+                        setState(() {
+                          movieHelper.name = "";
+                          movieHelper.page = 1;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.clear,
+                        size: height * 0.035,
+                        color: Colors.grey.shade700,
+                      ),
+                    )] : [],
                   ),
                   Padding(padding: EdgeInsets.all(height*0.005)),
                   createFilters(genres),
@@ -77,6 +99,18 @@ class _HomeState extends State<Home> {
         ),
       )
     );
+  }
+
+  @override
+  void initState() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
+        setState(() {
+          movieHelper.page++;
+        });
+      }
+    });
+    super.initState();
   }
 
   SizedBox createFilters(Map<String, String> genres) {
@@ -144,25 +178,14 @@ class _HomeState extends State<Home> {
       width: width * 0.9,
       child: ListView.builder(
         scrollDirection: Axis.vertical,
+        controller: _scrollController,
         itemCount: movies.length + 1,
         itemBuilder: (context, index) {
-          int length = movies.length;
-          if (index == length) {
-            return movieHelper.isLoading ? const Center(child: CircularProgressIndicator())
-            : movies.isNotEmpty ? Center(child: ElevatedButton(
-              onPressed: () async {
-                movieHelper.page++;
-                setState(() {});
-              },
-              child: const Text("Load More"),
-            )) : Center(
-              child: Text(
-                "No movies found.",
-                style: TextStyle(
-                  fontSize: width * 0.05
-                ),
-              ),
-            ) ;
+          if (index == movies.length) {
+            if (movieHelper.hasNextPage) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return const SizedBox();
           }
 
           Movie movie = movies[index];
