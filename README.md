@@ -1,16 +1,18 @@
-# maxflix
+# Maxflix
 
-A new Flutter project.
+**App for movie searching using TMDB API.**
 
-## Getting Started
+It's possible to select filters and search movies by name.
 
-This project is a starting point for a Flutter application.
+You can also tap a movie card to see more informations about it.
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Home Screen
+![HomeScreen](https://i.imgur.com/HUdWdlu.jpg)
+![FilterScreen](https://i.imgur.com/KqfPBgR.jpg)
+![SearchScreen](https://i.imgur.com/x4Z9Aa7.jpg)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Movie Screen
+![MovieScreenStart](https://i.imgur.com/AYxbBST.jpg)
+![MovieScreenEnd](https://i.imgur.com/3Za5AfK.jpg)
