@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
                         "Filmes",
                         style: TextStyle(
                           fontSize: height * 0.03,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -58,12 +58,10 @@ class _HomeState extends State<Home> {
                       hintText: "Pesquise filmes",
                       hintStyle: MaterialStateProperty.all(TextStyle(
                         color: Colors.grey.shade700,
-                        fontWeight: FontWeight.w400,
                         fontSize: height * 0.025,
                       )),
                       textStyle: MaterialStateProperty.all(TextStyle(
                         color: Colors.black,
-                        fontWeight: FontWeight.w400,
                         fontSize: height * 0.025,
                       )),
                       onChanged: (value) {
@@ -170,8 +168,8 @@ class _HomeState extends State<Home> {
                 child: Text(
                   keys[index],
                   style: TextStyle(
-                    fontWeight: FontWeight.normal,
                     fontSize: height*0.025,
+                    fontWeight: FontWeight.normal,
                     color: isActive ? Colors.white : Theme.of(context).primaryColor
                   ),
                 ),
@@ -243,6 +241,7 @@ class _HomeState extends State<Home> {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: width * 0.04,
+                              fontWeight: FontWeight.bold,
                             ),
                           )),
                         ),
@@ -252,13 +251,14 @@ class _HomeState extends State<Home> {
                       width: width,
                       padding: EdgeInsets.only(left: width * 0.08, right: width * 0.08, top: height * 0.08, bottom: height * 0.08),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             movie.title.toUpperCase(),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.bold,
                               fontSize: height*0.03,
                               color: Colors.white
                             ),
@@ -270,8 +270,8 @@ class _HomeState extends State<Home> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                fontWeight: FontWeight.w300,
                                 fontSize: height*0.03,
+                                fontWeight: FontWeight.normal,
                                 color: Colors.white
                               ),
                             ),

@@ -38,6 +38,7 @@ class _MoviePageState extends State<MoviePage> {
             "Voltar",
             style: TextStyle(
               color: Colors.grey.shade600,
+              fontWeight: FontWeight.w500,
               fontSize: 18,
             ),
           ),
@@ -84,6 +85,7 @@ class _MoviePageState extends State<MoviePage> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: width * 0.04,
+                                  fontWeight: FontWeight.bold
                                 ),
                               )),
                             ),
@@ -98,15 +100,15 @@ class _MoviePageState extends State<MoviePage> {
                               averageFormat.format(movie.voteAverage),
                               style: TextStyle(
                                 fontSize: width*0.1,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
                             Text(
-                              " /10",
+                              " / 10",
                               style: TextStyle(
                                 fontSize: width*0.07,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.grey.shade600,
                               ),
                             ),
@@ -120,7 +122,7 @@ class _MoviePageState extends State<MoviePage> {
                             style: TextStyle(
                               color: Colors.grey.shade800,
                               fontSize: width * 0.06,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.bold,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -144,7 +146,7 @@ class _MoviePageState extends State<MoviePage> {
                                 style: TextStyle(
                                   overflow: TextOverflow.ellipsis,
                                   fontSize: width*0.035,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   color: Colors.grey.shade700,
                                 ),
                               ),
@@ -169,15 +171,15 @@ class _MoviePageState extends State<MoviePage> {
                                     "Ano: ",
                                     style: TextStyle(
                                       fontSize: width*0.04,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.grey.shade600,
                                     ),
                                   ),
                                   Text(
                                     releaseYear,
                                     style: TextStyle(
-                                      fontSize: width*0.05,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: width*0.045,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.grey.shade900,
                                     ),
                                   ),
@@ -199,15 +201,15 @@ class _MoviePageState extends State<MoviePage> {
                                     "Duração: ",
                                     style: TextStyle(
                                       fontSize: width*0.04,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.grey.shade600,
                                     ),
                                   ),
                                   Text(
                                     formatDuration(movie.runtime),
                                     style: TextStyle(
-                                      fontSize: width*0.05,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: width*0.045,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.grey.shade900,
                                     ),
                                   ),
@@ -227,7 +229,7 @@ class _MoviePageState extends State<MoviePage> {
                             style: TextStyle(
                               color: Colors.grey.shade700,
                               fontSize: width * 0.06,
-                              fontWeight: FontWeight.w300,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                         ),
@@ -240,7 +242,7 @@ class _MoviePageState extends State<MoviePage> {
                             style: TextStyle(
                               color: Colors.grey.shade900,
                               fontSize: width * 0.04,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.justify,
                           ),
@@ -260,15 +262,15 @@ class _MoviePageState extends State<MoviePage> {
                                 "ORÇAMENTO:  ",
                                 style: TextStyle(
                                   fontSize: width*0.04,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.grey.shade600,
                                 ),
                               ),
                               Text(
                                 movie.budget != 0 ? currencyFormat.format(movie.budget) : "-",
                                 style: TextStyle(
-                                  fontSize: width*0.05,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: width*0.045,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.grey.shade900,
                                   overflow: TextOverflow.ellipsis
                                 ),
@@ -291,15 +293,15 @@ class _MoviePageState extends State<MoviePage> {
                                 "PRODUTORA:  ",
                                 style: TextStyle(
                                   fontSize: width*0.04,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.grey.shade600,
                                 ),
                               ),
                               Text(
                                 movie.productionCompanies.isNotEmpty ? movie.productionCompanies[0]["name"] : "-",
                                 style: TextStyle(
-                                  fontSize: width*0.05,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: width*0.045,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.grey.shade900,
                                   overflow: TextOverflow.ellipsis
                                 ),
@@ -316,7 +318,7 @@ class _MoviePageState extends State<MoviePage> {
                             style: TextStyle(
                               color: Colors.grey.shade700,
                               fontSize: width * 0.06,
-                              fontWeight: FontWeight.w300,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                         ),
@@ -329,7 +331,7 @@ class _MoviePageState extends State<MoviePage> {
                             style: TextStyle(
                               color: Colors.grey.shade900,
                               fontSize: width * 0.04,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.justify,
                           ),
@@ -343,7 +345,7 @@ class _MoviePageState extends State<MoviePage> {
                             style: TextStyle(
                               color: Colors.grey.shade700,
                               fontSize: width * 0.06,
-                              fontWeight: FontWeight.w300,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                         ),
@@ -356,7 +358,7 @@ class _MoviePageState extends State<MoviePage> {
                             style: TextStyle(
                               color: Colors.grey.shade900,
                               fontSize: width * 0.04,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.justify,
                           ),
@@ -398,7 +400,7 @@ class _MoviePageState extends State<MoviePage> {
               style: TextStyle(
                 overflow: TextOverflow.ellipsis,
                 fontSize: width*0.045,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
                 color: Colors.grey.shade700,
               ),
             ),
