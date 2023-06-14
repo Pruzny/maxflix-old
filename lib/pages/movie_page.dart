@@ -60,37 +60,53 @@ class _MoviePageState extends State<MoviePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(padding: EdgeInsets.all(height * 0.08)),
-                        Container(
-                          width: width * 0.6,
-                          height: width * 0.9,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF00384C).withOpacity(0.2),
-                                offset: const Offset(0, 20),
-                                spreadRadius: -10,
-                                blurRadius: 20,
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(width*0.03),
-                            child: movie.posterPath != null ? Image.network(
-                              "$posterPath${movie.posterPath}",
-                              fit: BoxFit.fitWidth,
-                            ) : Container(
-                              color: Colors.black,
-                              child: Center(child: Text(
-                                "No image",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: width * 0.04,
-                                  fontWeight: FontWeight.bold
+                        Stack(
+                          alignment: Alignment.bottomCenter,
+                          children: [
+                            Column(
+                              children: [
+                                Container(
+                                  height: width * 0.8,
+                                  color: const Color(0xFFF5F5F5),
                                 ),
-                              )),
+                                Container(
+                                  height: width * 0.4,
+                                  color: Colors.white,
+                                ),
+                              ],
                             ),
-                          ),
+                            Container(
+                              width: width * 0.6,
+                              height: width * 0.9,
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF00384C).withOpacity(0.2),
+                                    offset: const Offset(0, 20),
+                                    spreadRadius: -10,
+                                    blurRadius: 20,
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(width*0.03),
+                                child: movie.posterPath != null ? Image.network(
+                                  "$posterPath${movie.posterPath}",
+                                  fit: BoxFit.fitWidth,
+                                ) : Container(
+                                  color: Colors.black,
+                                  child: Center(child: Text(
+                                    "No image",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: width * 0.04,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  )),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Padding(padding: EdgeInsets.all(height * 0.03)),
                         Row(
@@ -124,8 +140,8 @@ class _MoviePageState extends State<MoviePage> {
                               color: const Color(0xFF343A40),
                               fontSize: width * 0.06,
                               fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                         Padding(padding: EdgeInsets.all(height * 0.015)),
