@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:maxflix/helper/movie_helper.dart';
 import 'package:maxflix/model/movie.dart';
 import 'package:maxflix/pages/movie_page.dart';
@@ -76,10 +77,9 @@ class _HomeState extends State<Home> {
                       },
                       backgroundColor: MaterialStateProperty.all(Colors.grey.shade200),
                       padding: MaterialStateProperty.all(EdgeInsets.only(left: width * 0.05)),
-                      leading: Icon(
-                        Icons.search,
-                        size: height * 0.025,
-                        color: Colors.grey.shade700,
+                      leading: SvgPicture.asset(
+                        "assets/icons/Search.svg",
+                        height: height * 0.025,
                       ),
                       shadowColor: MaterialStateProperty.all(Colors.transparent),
                       trailing: _searchController.text.isNotEmpty ? [IconButton(

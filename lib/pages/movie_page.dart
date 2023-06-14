@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:maxflix/helper/movie_helper.dart';
 import 'package:maxflix/model/movie.dart';
@@ -42,11 +43,10 @@ class _MoviePageState extends State<MoviePage> {
               fontSize: 18,
             ),
           ),
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.grey.shade600,
-            size: 18,
-          ),
+          icon: SvgPicture.asset(
+            "assets/icons/Back.svg",
+            height: 18,
+          )
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
