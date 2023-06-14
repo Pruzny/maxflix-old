@@ -35,10 +35,10 @@ class _MoviePageState extends State<MoviePage> {
             Navigator.pop(context);
           },
           backgroundColor: Colors.white,
-          label: Text(
+          label: const Text(
             "Voltar",
             style: TextStyle(
-              color: Colors.grey.shade600,
+              color: Color(0xFF6D7070),
               fontWeight: FontWeight.w500,
               fontSize: 18,
             ),
@@ -67,9 +67,10 @@ class _MoviePageState extends State<MoviePage> {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.grey.shade800.withOpacity(0.6),
-                                spreadRadius: 4,
-                                blurRadius: 16,
+                                color: const Color(0xFF00384C).withOpacity(0.2),
+                                offset: const Offset(0, 20),
+                                spreadRadius: -10,
+                                blurRadius: 20,
                               ),
                             ],
                           ),
@@ -109,7 +110,7 @@ class _MoviePageState extends State<MoviePage> {
                               style: TextStyle(
                                 fontSize: width*0.07,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade600,
+                                color: const Color(0xFF868E96),
                               ),
                             ),
                           ],
@@ -118,9 +119,9 @@ class _MoviePageState extends State<MoviePage> {
                         Container(
                           constraints: BoxConstraints(maxWidth: width * 0.8),
                           child: Text(
-                            movie.title,
+                            movie.title.toUpperCase(),
                             style: TextStyle(
-                              color: Colors.grey.shade800,
+                              color: const Color(0xFF343A40),
                               fontSize: width * 0.06,
                               fontWeight: FontWeight.bold,
                               overflow: TextOverflow.ellipsis,
@@ -136,7 +137,7 @@ class _MoviePageState extends State<MoviePage> {
                               style: TextStyle(
                                 fontSize: width*0.035,
                                 fontWeight: FontWeight.normal,
-                                color: Colors.grey.shade600,
+                                color: const Color(0xFF5E6770),
                               ),
                             ),
                             Container(
@@ -147,7 +148,7 @@ class _MoviePageState extends State<MoviePage> {
                                   overflow: TextOverflow.ellipsis,
                                   fontSize: width*0.035,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.grey.shade700,
+                                  color: const Color(0xFF5E6770),
                                 ),
                               ),
                             ),
@@ -161,7 +162,7 @@ class _MoviePageState extends State<MoviePage> {
                               height: width * 0.10,
                               width: width * 0.3,
                               decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
+                              color: const Color(0xFFF1F3F5),
                                 borderRadius: BorderRadius.circular(width * 0.015),
                               ),
                               child: Row(
@@ -172,7 +173,7 @@ class _MoviePageState extends State<MoviePage> {
                                     style: TextStyle(
                                       fontSize: width*0.04,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.grey.shade600,
+                                      color: const Color(0xFF868E96),
                                     ),
                                   ),
                                   Text(
@@ -180,7 +181,7 @@ class _MoviePageState extends State<MoviePage> {
                                     style: TextStyle(
                                       fontSize: width*0.045,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.grey.shade900,
+                                      color: const Color(0xFF343A40),
                                     ),
                                   ),
                                 ],
@@ -191,7 +192,7 @@ class _MoviePageState extends State<MoviePage> {
                               height: width * 0.10,
                               width: width * 0.5,
                               decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
+                              color: const Color(0xFFF1F3F5),
                                 borderRadius: BorderRadius.circular(width * 0.015),
                               ),
                               child: Row(
@@ -202,7 +203,7 @@ class _MoviePageState extends State<MoviePage> {
                                     style: TextStyle(
                                       fontSize: width*0.04,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.grey.shade600,
+                                      color: const Color(0xFF868E96),
                                     ),
                                   ),
                                   Text(
@@ -210,7 +211,7 @@ class _MoviePageState extends State<MoviePage> {
                                     style: TextStyle(
                                       fontSize: width*0.045,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.grey.shade900,
+                                      color: const Color(0xFF343A40),
                                     ),
                                   ),
                                 ],
@@ -227,7 +228,7 @@ class _MoviePageState extends State<MoviePage> {
                           child: Text(
                             "Descrição",
                             style: TextStyle(
-                              color: Colors.grey.shade700,
+                              color: const Color(0xFF5E6770),
                               fontSize: width * 0.06,
                               fontWeight: FontWeight.normal,
                             ),
@@ -240,7 +241,7 @@ class _MoviePageState extends State<MoviePage> {
                           child: Text(
                             movie.overview != "" ? movie.overview : "-",
                             style: TextStyle(
-                              color: Colors.grey.shade900,
+                              color: const Color(0xFF343A40),
                               fontSize: width * 0.04,
                               fontWeight: FontWeight.bold,
                             ),
@@ -252,7 +253,7 @@ class _MoviePageState extends State<MoviePage> {
                           height: width * 0.10,
                           width: width * 0.9,
                           decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
+                          color: const Color(0xFFF1F3F5),
                             borderRadius: BorderRadius.circular(width * 0.015),
                           ),
                           padding: EdgeInsets.only(left: width * 0.05),
@@ -263,7 +264,7 @@ class _MoviePageState extends State<MoviePage> {
                                 style: TextStyle(
                                   fontSize: width*0.04,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade600,
+                                  color: const Color(0xFF868E96),
                                 ),
                               ),
                               Text(
@@ -271,7 +272,7 @@ class _MoviePageState extends State<MoviePage> {
                                 style: TextStyle(
                                   fontSize: width*0.045,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade900,
+                                  color: const Color(0xFF343A40),
                                   overflow: TextOverflow.ellipsis
                                 ),
                               ),
@@ -283,7 +284,7 @@ class _MoviePageState extends State<MoviePage> {
                           height: width * 0.10,
                           width: width * 0.9,
                           decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
+                          color: const Color(0xFFF1F3F5),
                             borderRadius: BorderRadius.circular(width * 0.015),
                           ),
                           padding: EdgeInsets.only(left: width * 0.05),
@@ -294,7 +295,7 @@ class _MoviePageState extends State<MoviePage> {
                                 style: TextStyle(
                                   fontSize: width*0.04,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade600,
+                                  color: const Color(0xFF868E96),
                                 ),
                               ),
                               Text(
@@ -302,7 +303,7 @@ class _MoviePageState extends State<MoviePage> {
                                 style: TextStyle(
                                   fontSize: width*0.045,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade900,
+                                  color: const Color(0xFF343A40),
                                   overflow: TextOverflow.ellipsis
                                 ),
                               ),
@@ -316,7 +317,7 @@ class _MoviePageState extends State<MoviePage> {
                           child: Text(
                             "Diretor",
                             style: TextStyle(
-                              color: Colors.grey.shade700,
+                              color: const Color(0xFF5E6770),
                               fontSize: width * 0.06,
                               fontWeight: FontWeight.normal,
                             ),
@@ -329,7 +330,7 @@ class _MoviePageState extends State<MoviePage> {
                           child: Text(
                             getNames(movie.crew),
                             style: TextStyle(
-                              color: Colors.grey.shade900,
+                              color: const Color(0xFF343A40),
                               fontSize: width * 0.04,
                               fontWeight: FontWeight.bold,
                             ),
@@ -343,7 +344,7 @@ class _MoviePageState extends State<MoviePage> {
                           child: Text(
                             "Elenco",
                             style: TextStyle(
-                              color: Colors.grey.shade700,
+                              color: const Color(0xFF5E6770),
                               fontSize: width * 0.06,
                               fontWeight: FontWeight.normal,
                             ),
@@ -356,7 +357,7 @@ class _MoviePageState extends State<MoviePage> {
                           child: Text(
                             getNames(movie.cast),
                             style: TextStyle(
-                              color: Colors.grey.shade900,
+                              color: const Color(0xFF343A40),
                               fontSize: width * 0.04,
                               fontWeight: FontWeight.bold,
                             ),
@@ -401,7 +402,7 @@ class _MoviePageState extends State<MoviePage> {
                 overflow: TextOverflow.ellipsis,
                 fontSize: width*0.045,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey.shade700,
+                color: const Color(0xFF5E6770),
               ),
             ),
           ),

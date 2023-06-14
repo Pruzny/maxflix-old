@@ -50,19 +50,24 @@ class _HomeState extends State<Home> {
                         style: TextStyle(
                           fontSize: height * 0.03,
                           fontWeight: FontWeight.bold,
+                          color: const Color(0xFF343A40)
                         ),
                       ),
                     ),
                     Padding(padding: EdgeInsets.all(height*0.01)),
                     SearchBar(
                       controller: _searchController,
+                      leading: SvgPicture.asset(
+                        "assets/icons/Search.svg",
+                        height: height * 0.025,
+                      ),
                       hintText: "Pesquise filmes",
                       hintStyle: MaterialStateProperty.all(TextStyle(
-                        color: Colors.grey.shade700,
+                        color: const Color(0xFF5E6770),
                         fontSize: height * 0.025,
                       )),
                       textStyle: MaterialStateProperty.all(TextStyle(
-                        color: Colors.black,
+                        color: const Color(0xFF5E6770),
                         fontSize: height * 0.025,
                       )),
                       onChanged: (value) {
@@ -75,12 +80,8 @@ class _HomeState extends State<Home> {
                           });
                         }
                       },
-                      backgroundColor: MaterialStateProperty.all(Colors.grey.shade200),
+                      backgroundColor: MaterialStateProperty.all(const Color(0xFFF1F3F5)),
                       padding: MaterialStateProperty.all(EdgeInsets.only(left: width * 0.05)),
-                      leading: SvgPicture.asset(
-                        "assets/icons/Search.svg",
-                        height: height * 0.025,
-                      ),
                       shadowColor: MaterialStateProperty.all(Colors.transparent),
                       trailing: _searchController.text.isNotEmpty ? [IconButton(
                         onPressed: () {
@@ -93,7 +94,7 @@ class _HomeState extends State<Home> {
                         icon: Icon(
                           Icons.clear,
                           size: height * 0.025,
-                          color: Colors.grey.shade700,
+                          color: const Color(0xFF5E6770),
                         ),
                       )] : [],
                     ),
