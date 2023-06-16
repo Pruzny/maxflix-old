@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:maxflix/helper/movie_helper.dart';
 import 'package:maxflix/model/movie.dart';
@@ -41,7 +43,7 @@ class _HomeState extends State<Home> {
                   color: const Color(0xFF343A40)),
             ),
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
@@ -247,9 +249,10 @@ class _HomeState extends State<Home> {
                           },
                           blendMode: BlendMode.darken,
                           child: movie.posterPath != null
-                              ? Image.network(
-                                  "$_posterPath${movie.posterPath}",
-                                  fit: BoxFit.fitWidth,
+                              ? CachedNetworkImage(
+                                  imageUrl: "$_posterPath${movie.posterPath}",
+                                  cacheManager: movieHelper.cacheManager,
+                                  fit: BoxFit.fill,
                                 )
                               : Container(
                                   color: Colors.black,

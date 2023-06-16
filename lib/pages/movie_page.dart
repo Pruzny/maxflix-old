@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -92,10 +93,13 @@ class _MoviePageState extends State<MoviePage> {
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(width*0.03),
-                                  child: movie.posterPath != null ? Image.network(
-                                    "$posterPath${movie.posterPath}",
-                                    fit: BoxFit.fitWidth,
-                                  ) : Container(
+                                  child: movie.posterPath != null
+                                    ? CachedNetworkImage(
+                                        imageUrl: "$posterPath${movie.posterPath}",
+                                        cacheManager: MovieHelper().cacheManager,
+                                        fit: BoxFit.fill,
+                                      )
+                                    : Container(
                                     color: Colors.black,
                                     child: Center(child: Text(
                                       "No image",

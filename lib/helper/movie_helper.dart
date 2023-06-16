@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -25,6 +26,12 @@ class MovieHelper {
   bool hasNextPage = false;
   bool loadBase = false;
   bool isLoading = false;
+  final cacheManager = CacheManager(
+    Config(
+      "posters",
+      stalePeriod: const Duration(days: 7),
+    )
+  );
 
   MovieHelper._constructor();
 
