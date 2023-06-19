@@ -101,14 +101,14 @@ class _HomeState extends State<Home> {
                                   )),
                                   onChanged: (value) {
                                     if (!(_debounce?.isActive ?? false)) {
-                                      _debounce =
-                                          Timer(const Duration(milliseconds: 500),
-                                              () async {
-                                        setState(() {
-                                          movieHelper.name = value;
-                                          movieHelper.page = 1;
+                                      _debounce = Timer(
+                                        const Duration(milliseconds: 1000),
+                                        () async {
+                                          setState(() {
+                                            movieHelper.name = value;
+                                            movieHelper.page = 1;
+                                          });
                                         });
-                                      });
                                     }
                                   },
                                   backgroundColor: MaterialStateProperty.all(
