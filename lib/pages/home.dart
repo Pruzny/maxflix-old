@@ -45,7 +45,9 @@ class _HomeState extends State<Home> {
           ),
         ),
         resizeToAvoidBottomInset: false,
-        body: Center(
+        body: Container(
+          alignment: Alignment.center,
+          color: Colors.white,
           child: SizedBox(
             width: width * 0.9,
             child: FutureBuilder(
@@ -60,86 +62,107 @@ class _HomeState extends State<Home> {
                       SliverAppBar(
                         floating: true,
                         pinned: false,
-                        collapsedHeight: height * 0.14 + 78,
-                        backgroundColor: Colors.white,
-                        flexibleSpace: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(top: height * 0.025, bottom: height * 0.025),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "Filmes",
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF343A40)),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width * 0.9,
-                              child: SearchBar(
-                                controller: _searchController,
-                                leading: SvgPicture.asset(
-                                  "assets/icons/Search.svg",
-                                  height: 18,
+                        backgroundColor: Colors.transparent,
+                        bottom: PreferredSize(
+                          preferredSize: Size.fromHeight(height * 0.11 + 78),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: width * 0.9,
+                                height: 78,
+                                alignment: Alignment.centerLeft,
+                                color: Colors.white,
+                                child: const Text(
+                                  "Filmes",
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF343A40)),
                                 ),
-                                hintText: "Pesquise filmes",
-                                hintStyle: MaterialStateProperty.all(const TextStyle(
-                                  color: Color(0xFF5E6770),
-                                  fontSize: 18,
-                                )),
-                                textStyle: MaterialStateProperty.all(const TextStyle(
-                                  color: Color(0xFF5E6770),
-                                  fontSize: 18,
-                                )),
-                                onChanged: (value) {
-                                  if (!(_debounce?.isActive ?? false)) {
-                                    _debounce =
-                                        Timer(const Duration(milliseconds: 500),
-                                            () async {
-                                      setState(() {
-                                        movieHelper.name = value;
-                                        movieHelper.page = 1;
-                                      });
-                                    });
-                                  }
-                                },
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color(0xFFF1F3F5)),
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.only(left: width * 0.05)),
-                                shadowColor:
-                                    MaterialStateProperty.all(Colors.transparent),
-                                trailing: _searchController.text.isNotEmpty
-                                    ? [
-                                        IconButton(
-                                          onPressed: () {
-                                            _searchController.clear();
-                                            setState(() {
-                                              movieHelper.name = "";
-                                              movieHelper.page = 1;
-                                            });
-                                          },
-                                          icon: Icon(
-                                            Icons.clear,
-                                            size: height * 0.025,
-                                            color: const Color(0xFF5E6770),
-                                          ),
-                                        )
-                                      ]
-                                    : [],
                               ),
-                            ),
-                            Padding(padding: EdgeInsets.all(height * 0.005)),
-                            movieHelper.genres.isNotEmpty
-                                ? createFilters(genres)
-                                : const SizedBox(),
-                          ],
+                              Container(
+                                width: width * 0.9,
+                                height: 56,
+                                color: Colors.white,
+                                child: SearchBar(
+                                  controller: _searchController,
+                                  leading: SvgPicture.asset(
+                                    "assets/icons/Search.svg",
+                                    height: 18,
+                                  ),
+                                  hintText: "Pesquise filmes",
+                                  hintStyle: MaterialStateProperty.all(const TextStyle(
+                                    color: Color(0xFF5E6770),
+                                    fontSize: 18,
+                                  )),
+                                  textStyle: MaterialStateProperty.all(const TextStyle(
+                                    color: Color(0xFF5E6770),
+                                    fontSize: 18,
+                                  )),
+                                  onChanged: (value) {
+                                    if (!(_debounce?.isActive ?? false)) {
+                                      _debounce =
+                                          Timer(const Duration(milliseconds: 500),
+                                              () async {
+                                        setState(() {
+                                          movieHelper.name = value;
+                                          movieHelper.page = 1;
+                                        });
+                                      });
+                                    }
+                                  },
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color(0xFFF1F3F5)),
+                                  padding: MaterialStateProperty.all(
+                                      EdgeInsets.only(left: width * 0.05)),
+                                  shadowColor:
+                                      MaterialStateProperty.all(Colors.transparent),
+                                  trailing: _searchController.text.isNotEmpty
+                                      ? [
+                                          IconButton(
+                                            onPressed: () {
+                                              _searchController.clear();
+                                              setState(() {
+                                                movieHelper.name = "";
+                                                movieHelper.page = 1;
+                                              });
+                                            },
+                                            icon: Icon(
+                                              Icons.clear,
+                                              size: height * 0.025,
+                                              color: const Color(0xFF5E6770),
+                                            ),
+                                          )
+                                        ]
+                                      : [],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(top: height * 0.01, bottom: height * 0.045),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.center,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.white.withOpacity(1),
+                                      Colors.white.withOpacity(0),
+                                    ],
+                                  ),
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  )
+                                ),
+                                child: movieHelper.genres.isNotEmpty
+                                    ? createFilters(genres)
+                                    : const SizedBox(),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       SliverList(
-                          delegate: SliverChildBuilderDelegate(
+                        delegate: SliverChildBuilderDelegate(
                         (context, index) {
                           if (index == movies.length) {
                             if (movieHelper.hasNextPage) {
@@ -281,13 +304,14 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  SizedBox createFilters(Map<String, String> genres) {
+  Container createFilters(Map<String, String> genres) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     List<String> keys = List.from(genres.keys);
 
-    return SizedBox(
+    return Container(
       height: height * 0.055,
+      padding: EdgeInsets.only(bottom: height * 0.005),
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: genres.length,
