@@ -335,25 +335,36 @@ class _HomeState extends State<Home> {
                 },
                 style: isActive
                     ? ButtonStyle(
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(width))))
+                        elevation: MaterialStateProperty.all(0),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(width),
+                          )
+                        )
+                      )
                     : ButtonStyle(
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(width))),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
+                        elevation: MaterialStateProperty.all(0),
+                        side: MaterialStateProperty.all(
+                          const BorderSide(
+                            width: 1,
+                            color: Color(0xFFF1F3F5)
+                          ),
+                        ),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(width),
+                          )
+                        ),
+                        backgroundColor: MaterialStateProperty.all(Colors.white),
                       ),
-                child: FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child: Text(
-                    keys[index],
-                    style: TextStyle(
-                        fontSize: height * 0.025,
-                        fontWeight: FontWeight.normal,
-                        color: isActive
-                            ? Colors.white
-                            : Theme.of(context).primaryColor),
-                  ),
+                child: Text(
+                  keys[index],
+                  style: TextStyle(
+                      fontSize: height * 0.02,
+                      fontWeight: FontWeight.normal,
+                      color: isActive
+                          ? Colors.white
+                          : Theme.of(context).primaryColor),
                 ),
               ),
             );
