@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:maxflix/helper/movie_helper.dart';
 import 'package:maxflix/model/movie.dart';
@@ -34,342 +36,366 @@ class _MoviePageState extends State<MoviePage> {
             Navigator.pop(context);
           },
           backgroundColor: Colors.white,
-          label: Text(
+          label: const Text(
             "Voltar",
             style: TextStyle(
-              color: Colors.grey.shade600,
+              color: Color(0xFF6D7070),
+              fontWeight: FontWeight.w500,
               fontSize: 18,
             ),
           ),
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.grey.shade600,
-            size: 18,
-          ),
+          icon: SvgPicture.asset(
+            "assets/icons/Back.svg",
+            height: 18,
+          )
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: SafeArea(
-          child: Center(
-            child: FutureBuilder(
-              future: MovieHelper().getMovieData(movie),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(padding: EdgeInsets.all(height * 0.08)),
-                        Container(
-                          width: width * 0.6,
-                          height: width * 0.9,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.shade800.withOpacity(0.6),
-                                spreadRadius: 4,
-                                blurRadius: 16,
+          child: Container(
+            color: Colors.white,
+            child: Center(
+              child: FutureBuilder(
+                future: MovieHelper().getMovieData(movie),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              Column(
+                                children: [
+                                  Container(
+                                    height: width * 0.8,
+                                    color: const Color(0xFFF5F5F5),
+                                  ),
+                                  Container(
+                                    height: width * 0.4,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                width: width * 0.6,
+                                height: width * 0.9,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF00384C).withOpacity(0.2),
+                                      offset: const Offset(0, 20),
+                                      spreadRadius: -10,
+                                      blurRadius: 20,
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(width*0.03),
+                                  child: movie.posterPath != null
+                                    ? CachedNetworkImage(
+                                        imageUrl: "$posterPath${movie.posterPath}",
+                                        cacheManager: MovieHelper().cacheManager,
+                                        fit: BoxFit.fill,
+                                      )
+                                    : Container(
+                                    color: Colors.black,
+                                    child: Center(child: Text(
+                                      "No image",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: width * 0.04,
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                    )),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(width*0.03),
-                            child: movie.posterPath != null ? Image.network(
-                              "$posterPath${movie.posterPath}",
-                              fit: BoxFit.fitWidth,
-                            ) : Container(
-                              color: Colors.black,
-                              child: Center(child: Text(
-                                "No image",
+                          Padding(padding: EdgeInsets.all(height * 0.03)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                averageFormat.format(movie.voteAverage),
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: width * 0.04,
+                                  fontSize: width*0.1,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).primaryColor,
                                 ),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.all(height * 0.03)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              averageFormat.format(movie.voteAverage),
-                              style: TextStyle(
-                                fontSize: width*0.1,
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context).primaryColor,
                               ),
-                            ),
-                            Text(
-                              " /10",
-                              style: TextStyle(
-                                fontSize: width*0.07,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(padding: EdgeInsets.all(height * 0.03)),
-                        Container(
-                          constraints: BoxConstraints(maxWidth: width * 0.8),
-                          child: Text(
-                            movie.title,
-                            style: TextStyle(
-                              color: Colors.grey.shade800,
-                              fontSize: width * 0.06,
-                              fontWeight: FontWeight.w600,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.all(height * 0.015)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Título original: ",
-                              style: TextStyle(
-                                fontSize: width*0.035,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                            Container(
-                              constraints: BoxConstraints(maxWidth: width*0.6),
-                              child: Text(
-                                movie.originalTitle,
+                              Text(
+                                " / 10",
                                 style: TextStyle(
-                                  overflow: TextOverflow.ellipsis,
+                                  fontSize: width*0.07,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFF868E96),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(padding: EdgeInsets.all(height * 0.03)),
+                          Container(
+                            constraints: BoxConstraints(maxWidth: width * 0.8),
+                            child: Text(
+                              movie.title.toUpperCase(),
+                              style: TextStyle(
+                                color: const Color(0xFF343A40),
+                                fontSize: width * 0.06,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(height * 0.015)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Título original: ",
+                                style: TextStyle(
                                   fontSize: width*0.035,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey.shade700,
+                                  fontWeight: FontWeight.normal,
+                                  color: const Color(0xFF5E6770),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Padding(padding: EdgeInsets.all(height * 0.025)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: width * 0.10,
-                              width: width * 0.3,
-                              decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(width * 0.015),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Ano: ",
-                                    style: TextStyle(
-                                      fontSize: width*0.04,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey.shade600,
-                                    ),
+                              Container(
+                                constraints: BoxConstraints(maxWidth: width*0.6),
+                                child: Text(
+                                  movie.originalTitle,
+                                  style: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: width*0.035,
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xFF5E6770),
                                   ),
-                                  Text(
-                                    releaseYear,
-                                    style: TextStyle(
-                                      fontSize: width*0.05,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey.shade900,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(padding: EdgeInsets.only(left: width*0.03)),
-                            Container(
-                              height: width * 0.10,
-                              width: width * 0.5,
-                              decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(width * 0.015),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Duração: ",
-                                    style: TextStyle(
-                                      fontSize: width*0.04,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  ),
-                                  Text(
-                                    formatDuration(movie.runtime),
-                                    style: TextStyle(
-                                      fontSize: width*0.05,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey.shade900,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(padding: EdgeInsets.all(height * 0.01)),
-                        createGenreCards(genres: movie.genreIds, width: width, height: height),
-                        Padding(padding: EdgeInsets.all(height * 0.05)),
-                        Container(
-                          width: width * 0.9,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Descrição",
-                            style: TextStyle(
-                              color: Colors.grey.shade700,
-                              fontSize: width * 0.06,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.all(width * 0.015)),
-                        Container(
-                          width: width * 0.9,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            movie.overview != "" ? movie.overview : "-",
-                            style: TextStyle(
-                              color: Colors.grey.shade900,
-                              fontSize: width * 0.04,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.all(height * 0.03)),
-                        Container(
-                          height: width * 0.10,
-                          width: width * 0.9,
-                          decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(width * 0.015),
-                          ),
-                          padding: EdgeInsets.only(left: width * 0.05),
-                          child: Row(
-                            children: [
-                              Text(
-                                "ORÇAMENTO:  ",
-                                style: TextStyle(
-                                  fontSize: width*0.04,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey.shade600,
-                                ),
-                              ),
-                              Text(
-                                movie.budget != 0 ? currencyFormat.format(movie.budget) : "-",
-                                style: TextStyle(
-                                  fontSize: width*0.05,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey.shade900,
-                                  overflow: TextOverflow.ellipsis
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        Padding(padding: EdgeInsets.all(height * 0.005)),
-                        Container(
-                          height: width * 0.10,
-                          width: width * 0.9,
-                          decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(width * 0.015),
-                          ),
-                          padding: EdgeInsets.only(left: width * 0.05),
-                          child: Row(
+                          Padding(padding: EdgeInsets.all(height * 0.025)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "PRODUTORA:  ",
-                                style: TextStyle(
-                                  fontSize: width*0.04,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey.shade600,
+                              Container(
+                                height: width * 0.10,
+                                width: width * 0.3,
+                                decoration: BoxDecoration(
+                                color: const Color(0xFFF1F3F5),
+                                  borderRadius: BorderRadius.circular(width * 0.015),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Ano: ",
+                                      style: TextStyle(
+                                        fontSize: width*0.04,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xFF868E96),
+                                      ),
+                                    ),
+                                    Text(
+                                      releaseYear,
+                                      style: TextStyle(
+                                        fontSize: width*0.045,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xFF343A40),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Text(
-                                movie.productionCompanies.isNotEmpty ? movie.productionCompanies[0]["name"] : "-",
-                                style: TextStyle(
-                                  fontSize: width*0.05,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey.shade900,
-                                  overflow: TextOverflow.ellipsis
+                              Padding(padding: EdgeInsets.only(left: width*0.03)),
+                              Container(
+                                height: width * 0.10,
+                                width: width * 0.5,
+                                decoration: BoxDecoration(
+                                color: const Color(0xFFF1F3F5),
+                                  borderRadius: BorderRadius.circular(width * 0.015),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Duração: ",
+                                      style: TextStyle(
+                                        fontSize: width*0.04,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xFF868E96),
+                                      ),
+                                    ),
+                                    Text(
+                                      formatDuration(movie.runtime),
+                                      style: TextStyle(
+                                        fontSize: width*0.045,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xFF343A40),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        Padding(padding: EdgeInsets.all(height * 0.03)),
-                        Container(
-                          width: width * 0.9,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Diretor",
-                            style: TextStyle(
-                              color: Colors.grey.shade700,
-                              fontSize: width * 0.06,
-                              fontWeight: FontWeight.w300,
+                          Padding(padding: EdgeInsets.all(height * 0.01)),
+                          createGenreCards(genres: movie.genreIds, width: width, height: height),
+                          Padding(padding: EdgeInsets.all(height * 0.05)),
+                          Container(
+                            width: width * 0.9,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Descrição",
+                              style: TextStyle(
+                                color: const Color(0xFF5E6770),
+                                fontSize: width * 0.06,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(padding: EdgeInsets.all(width * 0.015)),
-                        Container(
-                          width: width * 0.9,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            getNames(movie.crew),
-                            style: TextStyle(
-                              color: Colors.grey.shade900,
-                              fontSize: width * 0.04,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.all(height * 0.025)),
-                        Container(
-                          width: width * 0.9,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Elenco",
-                            style: TextStyle(
-                              color: Colors.grey.shade700,
-                              fontSize: width * 0.06,
-                              fontWeight: FontWeight.w300,
+                          Padding(padding: EdgeInsets.all(width * 0.015)),
+                          Container(
+                            width: width * 0.9,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              movie.overview != "" ? movie.overview : "-",
+                              style: TextStyle(
+                                color: const Color(0xFF343A40),
+                                fontSize: width * 0.04,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.justify,
                             ),
                           ),
-                        ),
-                        Padding(padding: EdgeInsets.all(width * 0.015)),
-                        Container(
-                          width: width * 0.9,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            getNames(movie.cast),
-                            style: TextStyle(
-                              color: Colors.grey.shade900,
-                              fontSize: width * 0.04,
-                              fontWeight: FontWeight.w600,
+                          Padding(padding: EdgeInsets.all(height * 0.03)),
+                          Container(
+                            height: width * 0.10,
+                            width: width * 0.9,
+                            decoration: BoxDecoration(
+                            color: const Color(0xFFF1F3F5),
+                              borderRadius: BorderRadius.circular(width * 0.015),
                             ),
-                            textAlign: TextAlign.justify,
+                            padding: EdgeInsets.only(left: width * 0.05),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "ORÇAMENTO:  ",
+                                  style: TextStyle(
+                                    fontSize: width*0.04,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF868E96),
+                                  ),
+                                ),
+                                Text(
+                                  movie.budget != 0 ? currencyFormat.format(movie.budget) : "-",
+                                  style: TextStyle(
+                                    fontSize: width*0.045,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF343A40),
+                                    overflow: TextOverflow.ellipsis
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(padding: EdgeInsets.all(width * 0.05)),
-                      ],
-                    ),
-                  );
+                          Padding(padding: EdgeInsets.all(height * 0.005)),
+                          Container(
+                            height: width * 0.10,
+                            width: width * 0.9,
+                            decoration: BoxDecoration(
+                            color: const Color(0xFFF1F3F5),
+                              borderRadius: BorderRadius.circular(width * 0.015),
+                            ),
+                            padding: EdgeInsets.only(left: width * 0.05),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "PRODUTORA:  ",
+                                  style: TextStyle(
+                                    fontSize: width*0.04,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF868E96),
+                                  ),
+                                ),
+                                Text(
+                                  movie.productionCompanies.isNotEmpty ? movie.productionCompanies[0]["name"] : "-",
+                                  style: TextStyle(
+                                    fontSize: width*0.045,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF343A40),
+                                    overflow: TextOverflow.ellipsis
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(height * 0.03)),
+                          Container(
+                            width: width * 0.9,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Diretor",
+                              style: TextStyle(
+                                color: const Color(0xFF5E6770),
+                                fontSize: width * 0.06,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(width * 0.015)),
+                          Container(
+                            width: width * 0.9,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              getNames(movie.crew),
+                              style: TextStyle(
+                                color: const Color(0xFF343A40),
+                                fontSize: width * 0.04,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(height * 0.025)),
+                          Container(
+                            width: width * 0.9,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Elenco",
+                              style: TextStyle(
+                                color: const Color(0xFF5E6770),
+                                fontSize: width * 0.06,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(width * 0.015)),
+                          Container(
+                            width: width * 0.9,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              getNames(movie.cast),
+                              style: TextStyle(
+                                color: const Color(0xFF343A40),
+                                fontSize: width * 0.04,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(width * 0.05)),
+                        ],
+                      ),
+                    );
+                  }
+          
+                  return const CircularProgressIndicator();
                 }
-
-                return const CircularProgressIndicator();
-              }
-            )
+              )
+            ),
           )
       ),
     );
@@ -398,8 +424,8 @@ class _MoviePageState extends State<MoviePage> {
               style: TextStyle(
                 overflow: TextOverflow.ellipsis,
                 fontSize: width*0.045,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade700,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF5E6770),
               ),
             ),
           ),

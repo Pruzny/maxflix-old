@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
           800: Color(0xFF002433),
           900: Color(0xFF001724),
         }),
+        fontFamily: 'Montserrat'
       ),
       debugShowCheckedModeBanner: false,
       home: const Home(),
