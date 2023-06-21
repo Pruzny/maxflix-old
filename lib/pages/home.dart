@@ -31,19 +31,6 @@ class _HomeState extends State<Home> {
     Map<String, String> genres = movieHelper.genres;
 
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(0),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            elevation: 0,
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: Colors.white,
-              statusBarIconBrightness: Brightness.dark,
-              statusBarBrightness: Brightness.dark,
-            ),
-          ),
-        ),
         resizeToAvoidBottomInset: false,
         body: Container(
           alignment: Alignment.center,
