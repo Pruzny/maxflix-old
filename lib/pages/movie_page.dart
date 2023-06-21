@@ -15,8 +15,6 @@ class MoviePage extends StatefulWidget {
 }
 
 class _MoviePageState extends State<MoviePage> {
-  static const maxNames = 5;
-
   @override
   Widget build(BuildContext context) {
     Movie movie = widget.movie;
@@ -32,30 +30,29 @@ class _MoviePageState extends State<MoviePage> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(top: 16),
         child: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          backgroundColor: Colors.white,
-          label: const Text(
-            "Voltar",
-            style: TextStyle(
-              color: Color(0xFF6D7070),
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            backgroundColor: Colors.white,
+            label: const Text(
+              "Voltar",
+              style: TextStyle(
+                color: Color(0xFF6D7070),
+                fontWeight: FontWeight.w500,
+                fontSize: 18,
+              ),
             ),
-          ),
-          icon: SvgPicture.asset(
-            "assets/icons/Back.svg",
-            height: 18,
-          )
-        ),
+            icon: SvgPicture.asset(
+              "assets/icons/Back.svg",
+              height: 18,
+            )),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: SafeArea(
           child: Container(
-            color: Colors.white,
-            child: Center(
-              child: FutureBuilder(
+        color: Colors.white,
+        child: Center(
+            child: FutureBuilder(
                 future: MovieHelper().getMovieData(movie),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -84,7 +81,8 @@ class _MoviePageState extends State<MoviePage> {
                                 decoration: BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
-                                      color: const Color(0xFF00384C).withOpacity(0.2),
+                                      color: const Color(0xFF00384C)
+                                          .withOpacity(0.2),
                                       offset: const Offset(0, 20),
                                       spreadRadius: -10,
                                       blurRadius: 20,
@@ -92,24 +90,27 @@ class _MoviePageState extends State<MoviePage> {
                                   ],
                                 ),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(width*0.03),
+                                  borderRadius:
+                                      BorderRadius.circular(width * 0.03),
                                   child: movie.posterPath != null
-                                    ? CachedNetworkImage(
-                                        imageUrl: "$posterPath${movie.posterPath}",
-                                        cacheManager: MovieHelper().cacheManager,
-                                        fit: BoxFit.fill,
-                                      )
-                                    : Container(
-                                    color: Colors.black,
-                                    child: Center(child: Text(
-                                      "No image",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: width * 0.04,
-                                        fontWeight: FontWeight.bold
-                                      ),
-                                    )),
-                                  ),
+                                      ? CachedNetworkImage(
+                                          imageUrl:
+                                              "$posterPath${movie.posterPath}",
+                                          cacheManager:
+                                              MovieHelper().cacheManager,
+                                          fit: BoxFit.fill,
+                                        )
+                                      : Container(
+                                          color: Colors.black,
+                                          child: Center(
+                                              child: Text(
+                                            "No image",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: width * 0.04,
+                                                fontWeight: FontWeight.bold),
+                                          )),
+                                        ),
                                 ),
                               ),
                             ],
@@ -122,7 +123,7 @@ class _MoviePageState extends State<MoviePage> {
                               Text(
                                 averageFormat.format(movie.voteAverage),
                                 style: TextStyle(
-                                  fontSize: width*0.1,
+                                  fontSize: width * 0.1,
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).primaryColor,
                                 ),
@@ -130,7 +131,7 @@ class _MoviePageState extends State<MoviePage> {
                               Text(
                                 " / 10",
                                 style: TextStyle(
-                                  fontSize: width*0.07,
+                                  fontSize: width * 0.07,
                                   fontWeight: FontWeight.bold,
                                   color: const Color(0xFF868E96),
                                 ),
@@ -157,18 +158,19 @@ class _MoviePageState extends State<MoviePage> {
                               Text(
                                 "Título original: ",
                                 style: TextStyle(
-                                  fontSize: width*0.035,
+                                  fontSize: width * 0.035,
                                   fontWeight: FontWeight.normal,
                                   color: const Color(0xFF5E6770),
                                 ),
                               ),
                               Container(
-                                constraints: BoxConstraints(maxWidth: width*0.6),
+                                constraints:
+                                    BoxConstraints(maxWidth: width * 0.6),
                                 child: Text(
                                   movie.originalTitle,
                                   style: TextStyle(
                                     overflow: TextOverflow.ellipsis,
-                                    fontSize: width*0.035,
+                                    fontSize: width * 0.035,
                                     fontWeight: FontWeight.w500,
                                     color: const Color(0xFF5E6770),
                                   ),
@@ -184,8 +186,9 @@ class _MoviePageState extends State<MoviePage> {
                                 height: width * 0.10,
                                 width: width * 0.3,
                                 decoration: BoxDecoration(
-                                color: const Color(0xFFF1F3F5),
-                                  borderRadius: BorderRadius.circular(width * 0.015),
+                                  color: const Color(0xFFF1F3F5),
+                                  borderRadius:
+                                      BorderRadius.circular(width * 0.015),
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -193,7 +196,7 @@ class _MoviePageState extends State<MoviePage> {
                                     Text(
                                       "Ano: ",
                                       style: TextStyle(
-                                        fontSize: width*0.04,
+                                        fontSize: width * 0.04,
                                         fontWeight: FontWeight.bold,
                                         color: const Color(0xFF868E96),
                                       ),
@@ -201,7 +204,7 @@ class _MoviePageState extends State<MoviePage> {
                                     Text(
                                       releaseYear,
                                       style: TextStyle(
-                                        fontSize: width*0.045,
+                                        fontSize: width * 0.045,
                                         fontWeight: FontWeight.bold,
                                         color: const Color(0xFF343A40),
                                       ),
@@ -209,13 +212,15 @@ class _MoviePageState extends State<MoviePage> {
                                   ],
                                 ),
                               ),
-                              Padding(padding: EdgeInsets.only(left: width*0.03)),
+                              Padding(
+                                  padding: EdgeInsets.only(left: width * 0.03)),
                               Container(
                                 height: width * 0.10,
                                 width: width * 0.5,
                                 decoration: BoxDecoration(
-                                color: const Color(0xFFF1F3F5),
-                                  borderRadius: BorderRadius.circular(width * 0.015),
+                                  color: const Color(0xFFF1F3F5),
+                                  borderRadius:
+                                      BorderRadius.circular(width * 0.015),
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -223,7 +228,7 @@ class _MoviePageState extends State<MoviePage> {
                                     Text(
                                       "Duração: ",
                                       style: TextStyle(
-                                        fontSize: width*0.04,
+                                        fontSize: width * 0.04,
                                         fontWeight: FontWeight.bold,
                                         color: const Color(0xFF868E96),
                                       ),
@@ -231,7 +236,7 @@ class _MoviePageState extends State<MoviePage> {
                                     Text(
                                       formatDuration(movie.runtime),
                                       style: TextStyle(
-                                        fontSize: width*0.045,
+                                        fontSize: width * 0.045,
                                         fontWeight: FontWeight.bold,
                                         color: const Color(0xFF343A40),
                                       ),
@@ -242,7 +247,10 @@ class _MoviePageState extends State<MoviePage> {
                             ],
                           ),
                           Padding(padding: EdgeInsets.all(height * 0.01)),
-                          createGenreCards(genres: movie.genreIds, width: width, height: height),
+                          createGenreCards(
+                              genres: movie.genreIds,
+                              width: width,
+                              height: height),
                           Padding(padding: EdgeInsets.all(height * 0.05)),
                           Container(
                             width: width * 0.9,
@@ -275,8 +283,9 @@ class _MoviePageState extends State<MoviePage> {
                             height: width * 0.10,
                             width: width * 0.9,
                             decoration: BoxDecoration(
-                            color: const Color(0xFFF1F3F5),
-                              borderRadius: BorderRadius.circular(width * 0.015),
+                              color: const Color(0xFFF1F3F5),
+                              borderRadius:
+                                  BorderRadius.circular(width * 0.015),
                             ),
                             padding: EdgeInsets.only(left: width * 0.05),
                             child: Row(
@@ -284,49 +293,53 @@ class _MoviePageState extends State<MoviePage> {
                                 Text(
                                   "ORÇAMENTO:  ",
                                   style: TextStyle(
-                                    fontSize: width*0.04,
+                                    fontSize: width * 0.04,
                                     fontWeight: FontWeight.bold,
                                     color: const Color(0xFF868E96),
                                   ),
                                 ),
                                 Text(
-                                  movie.budget != 0 ? currencyFormat.format(movie.budget) : "-",
+                                  movie.budget != 0
+                                      ? currencyFormat.format(movie.budget)
+                                      : "-",
                                   style: TextStyle(
-                                    fontSize: width*0.045,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color(0xFF343A40),
-                                    overflow: TextOverflow.ellipsis
-                                  ),
+                                      fontSize: width * 0.045,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xFF343A40),
+                                      overflow: TextOverflow.ellipsis),
                                 ),
                               ],
                             ),
                           ),
                           Padding(padding: EdgeInsets.all(height * 0.005)),
                           Container(
-                            height: width * 0.10,
+                            constraints:
+                                BoxConstraints(minHeight: width * 0.10),
                             width: width * 0.9,
                             decoration: BoxDecoration(
-                            color: const Color(0xFFF1F3F5),
-                              borderRadius: BorderRadius.circular(width * 0.015),
+                              color: const Color(0xFFF1F3F5),
+                              borderRadius:
+                                  BorderRadius.circular(width * 0.015),
                             ),
-                            padding: EdgeInsets.only(left: width * 0.05),
-                            child: Row(
+                            padding: EdgeInsets.symmetric(horizontal: width * 0.05, vertical: height * 0.01, ),
+                            child: Wrap(
                               children: [
                                 Text(
                                   "PRODUTORA:  ",
                                   style: TextStyle(
-                                    fontSize: width*0.04,
+                                    fontSize: width * 0.04,
                                     fontWeight: FontWeight.bold,
                                     color: const Color(0xFF868E96),
                                   ),
                                 ),
                                 Text(
-                                  movie.productionCompanies.isNotEmpty ? movie.productionCompanies[0]["name"] : "-",
+                                  getNames(
+                                    movie.productionCompanies,
+                                  ),
                                   style: TextStyle(
-                                    fontSize: width*0.045,
+                                    fontSize: width * 0.045,
                                     fontWeight: FontWeight.bold,
                                     color: const Color(0xFF343A40),
-                                    overflow: TextOverflow.ellipsis
                                   ),
                                 ),
                               ],
@@ -391,46 +404,46 @@ class _MoviePageState extends State<MoviePage> {
                       ),
                     );
                   }
-          
+
                   return const CircularProgressIndicator();
-                }
-              )
-            ),
-          )
-      ),
+                })),
+      )),
     );
   }
 
-  Row createGenreCards({required List<dynamic> genres, required double width, required double height}) {
+  Row createGenreCards(
+      {required List<dynamic> genres,
+      required double width,
+      required double height}) {
     Map<String, String> genreMap = MovieHelper().reversedGenres;
 
     List<Widget> children = [];
 
     int len = genres.length;
-    for (int i=0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
       if (len >= i + 1) {
         children.add(Container(
           height: width * 0.10,
           decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade200),
+            border: Border.all(color: Colors.grey.shade200),
             borderRadius: BorderRadius.circular(width * 0.015),
           ),
           alignment: Alignment.center,
-          padding: EdgeInsets.only(left: width*0.025, right: width*0.025),
+          padding: EdgeInsets.only(left: width * 0.025, right: width * 0.025),
           child: Container(
-            constraints: BoxConstraints(maxWidth: width*0.25),
+            constraints: BoxConstraints(maxWidth: width * 0.25),
             child: Text(
               genreMap["${genres[i]}"]?.toUpperCase() ?? "",
               style: TextStyle(
                 overflow: TextOverflow.ellipsis,
-                fontSize: width*0.045,
+                fontSize: width * 0.045,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF5E6770),
               ),
             ),
           ),
         ));
-        children.add(Padding(padding: EdgeInsets.only(left: width*0.02)));
+        children.add(Padding(padding: EdgeInsets.only(left: width * 0.02)));
       }
     }
 
@@ -460,7 +473,7 @@ class _MoviePageState extends State<MoviePage> {
     List<String> names = [];
 
     for (Map<String, dynamic> element in elements) {
-      names.add("${element["original_name"]}");
+      names.add("${element["name"]}");
     }
 
     names = names.toSet().toList();
@@ -469,18 +482,47 @@ class _MoviePageState extends State<MoviePage> {
       text = names.first;
 
       if (names.length > 1) {
-        for (String name in names.sublist(1, names.length < maxNames ? names.length : maxNames)) {
+        for (String name in names) {
           text = "$text, $name";
         }
-      }
-
-      if (names.length > 5) {
-        text = "$text...";
       }
     } else {
       text = "-";
     }
 
     return text;
+  }
+
+  List<Text> getCompanies(List<dynamic> elements, TextStyle? style) {
+    List<String> names = [];
+
+    for (Map<String, dynamic> element in elements) {
+      names.add("${element["name"]}");
+    }
+
+    names = names.toSet().toList();
+    List<Text> texts = [];
+    if (names.isNotEmpty) {
+      texts.add(Text(
+        names[0],
+        style: style,
+      ));
+
+      if (names.length > 1) {
+        for (String name in names.sublist(1)) {
+          texts.add(Text(
+            ", $name",
+            style: style,
+          ));
+        }
+      }
+    } else {
+      texts = [Text(
+        "-",
+        style: style,
+      )];
+    }
+
+    return texts;
   }
 }
