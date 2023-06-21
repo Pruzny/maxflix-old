@@ -62,9 +62,10 @@ class _HomeState extends State<Home> {
                       SliverAppBar(
                         floating: true,
                         pinned: false,
-                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                        backgroundColor: Colors.white,
                         bottom: PreferredSize(
-                          preferredSize: Size.fromHeight(height * 0.11 + 78),
+                          preferredSize: const Size.fromHeight(142),
                           child: Column(
                             children: [
                               Container(
@@ -138,7 +139,8 @@ class _HomeState extends State<Home> {
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.only(top: height * 0.01, bottom: height * 0.045),
+                                padding: const EdgeInsets.only(top: 16, bottom: 16),
+                                height: 64,
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     begin: Alignment.center,
@@ -304,72 +306,68 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  Container createFilters(Map<String, String> genres) {
+  ListView createFilters(Map<String, String> genres) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     List<String> keys = List.from(genres.keys);
 
-    return Container(
-      height: height * 0.055,
-      padding: EdgeInsets.only(bottom: height * 0.005),
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: genres.length,
-          itemBuilder: (context, index) {
-            bool isActive = _toggleController.filter.contains(index);
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: genres.length,
+        itemBuilder: (context, index) {
+          bool isActive = _toggleController.filter.contains(index);
 
-            return Container(
-              padding: const EdgeInsets.all(6),
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    movieHelper.page = 1;
-                    if (isActive) {
-                      _toggleController.filter.remove(index);
-                      movieHelper.genresQuery.remove(genres[keys[index]]);
-                    } else {
-                      _toggleController.filter.add(index);
-                      movieHelper.genresQuery.add(genres[keys[index]]!);
-                    }
-                  });
-                },
-                style: isActive
-                    ? ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(width),
-                          )
+          return Container(
+            padding: const EdgeInsets.only(right: 14),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  movieHelper.page = 1;
+                  if (isActive) {
+                    _toggleController.filter.remove(index);
+                    movieHelper.genresQuery.remove(genres[keys[index]]);
+                  } else {
+                    _toggleController.filter.add(index);
+                    movieHelper.genresQuery.add(genres[keys[index]]!);
+                  }
+                });
+              },
+              style: isActive
+                  ? ButtonStyle(
+                      elevation: MaterialStateProperty.all(0),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(width),
                         )
                       )
-                    : ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        side: MaterialStateProperty.all(
-                          const BorderSide(
-                            width: 1,
-                            color: Color(0xFFF1F3F5)
-                          ),
+                    )
+                  : ButtonStyle(
+                      elevation: MaterialStateProperty.all(0),
+                      side: MaterialStateProperty.all(
+                        const BorderSide(
+                          width: 1,
+                          color: Color(0xFFF1F3F5)
                         ),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(width),
-                          )
-                        ),
-                        backgroundColor: MaterialStateProperty.all(Colors.white),
                       ),
-                child: Text(
-                  keys[index],
-                  style: TextStyle(
-                      fontSize: height * 0.02,
-                      fontWeight: FontWeight.normal,
-                      color: isActive
-                          ? Colors.white
-                          : Theme.of(context).primaryColor),
-                ),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(width),
+                        )
+                      ),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                    ),
+              child: Text(
+                keys[index],
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: isActive
+                        ? Colors.white
+                        : Theme.of(context).primaryColor),
               ),
-            );
-          }),
-    );
+            ),
+          );
+        });
   }
 }
 
