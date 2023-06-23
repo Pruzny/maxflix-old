@@ -411,7 +411,7 @@ class _MoviePageState extends State<MoviePage> {
     );
   }
 
-  Row createGenreCards(
+  SizedBox createGenreCards(
       {required List<dynamic> genres,
       required double width,
       required double height}) {
@@ -422,16 +422,15 @@ class _MoviePageState extends State<MoviePage> {
     int len = genres.length;
     for (int i = 0; i < 3; i++) {
       if (len >= i + 1) {
-        children.add(Container(
-          height: width * 0.10,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade200),
-            borderRadius: BorderRadius.circular(width * 0.015),
-          ),
-          alignment: Alignment.center,
-          padding: EdgeInsets.only(left: width * 0.025, right: width * 0.025),
+        children.add(IntrinsicWidth(
           child: Container(
-            constraints: BoxConstraints(maxWidth: width * 0.25),
+            height: height * 0.05,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade200),
+              borderRadius: BorderRadius.circular(width * 0.015),
+            ),
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(left: width * 0.025, right: width * 0.025),
             child: Text(
               genreMap["${genres[i]}"]?.toUpperCase() ?? "",
               style: TextStyle(
@@ -443,17 +442,17 @@ class _MoviePageState extends State<MoviePage> {
             ),
           ),
         ));
-        children.add(Padding(padding: EdgeInsets.only(left: width * 0.02)));
       }
     }
 
-    if (children.isNotEmpty) {
-      children.removeLast();
-    }
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: children,
+    return SizedBox(
+      width: width * 0.9,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: width * 0.025,
+        runSpacing: width * 0.025,
+        children: children,
+      ),
     );
   }
 
@@ -491,38 +490,5 @@ class _MoviePageState extends State<MoviePage> {
     }
 
     return text;
-  }
-
-  List<Text> getCompanies(List<dynamic> elements, TextStyle? style) {
-    List<String> names = [];
-
-    for (Map<String, dynamic> element in elements) {
-      names.add("${element["name"]}");
-    }
-
-    names = names.toSet().toList();
-    List<Text> texts = [];
-    if (names.isNotEmpty) {
-      texts.add(Text(
-        names[0],
-        style: style,
-      ));
-
-      if (names.length > 1) {
-        for (String name in names.sublist(1)) {
-          texts.add(Text(
-            ", $name",
-            style: style,
-          ));
-        }
-      }
-    } else {
-      texts = [Text(
-        "-",
-        style: style,
-      )];
-    }
-
-    return texts;
   }
 }
