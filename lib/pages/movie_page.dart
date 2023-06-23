@@ -426,7 +426,7 @@ class _MoviePageState extends State<MoviePage> {
       if (len >= i + 1) {
         children.add(IntrinsicWidth(
           child: Container(
-            height: height * 0.05,
+            height: width * 0.1,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey.shade200),
               borderRadius: BorderRadius.circular(width * 0.015),
