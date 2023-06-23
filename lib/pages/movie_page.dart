@@ -121,7 +121,9 @@ class _MoviePageState extends State<MoviePage> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                averageFormat.format(movie.voteAverage),
+                                movie.voteAverage != null
+                                  ? averageFormat.format(movie.voteAverage)
+                                  : "-",
                                 style: TextStyle(
                                   fontSize: width * 0.1,
                                   fontWeight: FontWeight.bold,
@@ -234,7 +236,7 @@ class _MoviePageState extends State<MoviePage> {
                                       ),
                                     ),
                                     Text(
-                                      formatDuration(movie.runtime),
+                                      movie.runtime != null ? formatDuration(movie.runtime) : "-",
                                       style: TextStyle(
                                         fontSize: width * 0.045,
                                         fontWeight: FontWeight.bold,

@@ -6,12 +6,12 @@ class Movie {
   String originalLanguage;
   String originalTitle;
   String overview;
-  double popularity;
+  double? popularity;
   String? posterPath;
   String releaseDate;
   String title;
   bool video;
-  double voteAverage;
+  double? voteAverage;
   int voteCount;
   int? runtime;
   int? budget;
@@ -46,12 +46,12 @@ class Movie {
       originalLanguage: map["original_language"] as String,
       originalTitle: map["original_title"] as String,
       overview: map["overview"] as String,
-      popularity: double.tryParse("${map["popularity"]}")!,
+      popularity: double.tryParse("${map["popularity"]}"),
       posterPath: map["poster_path"] as String?,
       releaseDate: map["release_date"] ?? "",
       title: map["title"] as String,
       video: map["video"] as bool,
-      voteAverage: double.tryParse("${map["vote_average"]}")!,
+      voteAverage: double.tryParse("${map["vote_average"]}"),
       voteCount: map["vote_count"] as int,
     );
   }
