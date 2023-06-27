@@ -31,25 +31,11 @@ class _HomeState extends State<Home> {
     Map<String, String> genres = movieHelper.genres;
 
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(0),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            elevation: 0,
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: Colors.white,
-              statusBarIconBrightness: Brightness.dark,
-              statusBarBrightness: Brightness.dark,
-            ),
-          ),
-        ),
         resizeToAvoidBottomInset: false,
         body: Container(
           alignment: Alignment.center,
           color: Colors.white,
           child: SizedBox(
-            width: width * 0.9,
             child: FutureBuilder(
               future: movieHelper.loadData(),
               builder: (context, snapshot) {
@@ -62,9 +48,10 @@ class _HomeState extends State<Home> {
                       SliverAppBar(
                         floating: true,
                         pinned: false,
-                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                        backgroundColor: Colors.white,
                         bottom: PreferredSize(
-                          preferredSize: Size.fromHeight(height * 0.11 + 78),
+                          preferredSize: const Size.fromHeight(142),
                           child: Column(
                             children: [
                               Container(
@@ -91,32 +78,34 @@ class _HomeState extends State<Home> {
                                     height: 18,
                                   ),
                                   hintText: "Pesquise filmes",
-                                  hintStyle: MaterialStateProperty.all(const TextStyle(
+                                  hintStyle:
+                                      MaterialStateProperty.all(const TextStyle(
                                     color: Color(0xFF5E6770),
                                     fontSize: 18,
                                   )),
-                                  textStyle: MaterialStateProperty.all(const TextStyle(
+                                  textStyle:
+                                      MaterialStateProperty.all(const TextStyle(
                                     color: Color(0xFF5E6770),
                                     fontSize: 18,
                                   )),
                                   onChanged: (value) {
                                     if (!(_debounce?.isActive ?? false)) {
                                       _debounce = Timer(
-                                        const Duration(milliseconds: 1000),
-                                        () async {
-                                          setState(() {
-                                            movieHelper.name = value;
-                                            movieHelper.page = 1;
-                                          });
+                                          const Duration(milliseconds: 1000),
+                                          () async {
+                                        setState(() {
+                                          movieHelper.name = value;
+                                          movieHelper.page = 1;
                                         });
+                                      });
                                     }
                                   },
                                   backgroundColor: MaterialStateProperty.all(
                                       const Color(0xFFF1F3F5)),
                                   padding: MaterialStateProperty.all(
                                       EdgeInsets.only(left: width * 0.05)),
-                                  shadowColor:
-                                      MaterialStateProperty.all(Colors.transparent),
+                                  shadowColor: MaterialStateProperty.all(
+                                      Colors.transparent),
                                   trailing: _searchController.text.isNotEmpty
                                       ? [
                                           IconButton(
@@ -138,21 +127,22 @@ class _HomeState extends State<Home> {
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.only(top: height * 0.01, bottom: height * 0.045),
+                                padding:
+                                    const EdgeInsets.only(top: 16, bottom: 16),
+                                height: 64,
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.center,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Colors.white.withOpacity(1),
-                                      Colors.white.withOpacity(0),
-                                    ],
-                                  ),
-                                  borderRadius: const BorderRadius.only(
-                                    bottomLeft: Radius.circular(10),
-                                    bottomRight: Radius.circular(10),
-                                  )
-                                ),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.center,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Colors.white.withOpacity(1),
+                                        Colors.white.withOpacity(0),
+                                      ],
+                                    ),
+                                    borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                    )),
                                 child: movieHelper.genres.isNotEmpty
                                     ? createFilters(genres)
                                     : const SizedBox(),
@@ -162,7 +152,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       SliverList(
-                        delegate: SliverChildBuilderDelegate(
+                          delegate: SliverChildBuilderDelegate(
                         (context, index) {
                           if (index == movies.length) {
                             if (movieHelper.hasNextPage) {
@@ -175,7 +165,9 @@ class _HomeState extends State<Home> {
                           Movie movie = movies[index];
 
                           return Container(
-                            padding: const EdgeInsets.only(bottom: 24),
+                            padding: const EdgeInsets.only(bottom: 8),
+                            margin: EdgeInsets.only(
+                                left: width * 0.05, right: width * 0.05),
                             child: Card(
                               shadowColor: Colors.transparent,
                               clipBehavior: Clip.hardEdge,
@@ -304,72 +296,66 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  Container createFilters(Map<String, String> genres) {
+  ListView createFilters(Map<String, String> genres) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     List<String> keys = List.from(genres.keys);
 
-    return Container(
-      height: height * 0.055,
-      padding: EdgeInsets.only(bottom: height * 0.005),
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: genres.length,
-          itemBuilder: (context, index) {
-            bool isActive = _toggleController.filter.contains(index);
-
-            return Container(
-              padding: const EdgeInsets.all(6),
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    movieHelper.page = 1;
-                    if (isActive) {
-                      _toggleController.filter.remove(index);
-                      movieHelper.genresQuery.remove(genres[keys[index]]);
-                    } else {
-                      _toggleController.filter.add(index);
-                      movieHelper.genresQuery.add(genres[keys[index]]!);
-                    }
-                  });
-                },
-                style: isActive
-                    ? ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(width),
-                          )
-                        )
-                      )
-                    : ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        side: MaterialStateProperty.all(
-                          const BorderSide(
-                            width: 1,
-                            color: Color(0xFFF1F3F5)
-                          ),
-                        ),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(width),
-                          )
-                        ),
-                        backgroundColor: MaterialStateProperty.all(Colors.white),
-                      ),
-                child: Text(
-                  keys[index],
-                  style: TextStyle(
-                      fontSize: height * 0.02,
-                      fontWeight: FontWeight.normal,
-                      color: isActive
-                          ? Colors.white
-                          : Theme.of(context).primaryColor),
-                ),
-              ),
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: genres.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return SizedBox(
+              width: width * 0.05,
             );
-          }),
-    );
+          }
+
+          bool isActive = _toggleController.filter.contains(index - 1);
+
+          return Container(
+            padding: const EdgeInsets.only(right: 14),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  movieHelper.page = 1;
+                  if (isActive) {
+                    _toggleController.filter.remove(index - 1);
+                    movieHelper.genresQuery.remove(genres[keys[index - 1]]);
+                  } else {
+                    _toggleController.filter.add(index - 1);
+                    movieHelper.genresQuery.add(genres[keys[index - 1]]!);
+                  }
+                });
+              },
+              style: isActive
+                  ? ButtonStyle(
+                      elevation: MaterialStateProperty.all(0),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(width),
+                      )))
+                  : ButtonStyle(
+                      elevation: MaterialStateProperty.all(0),
+                      side: MaterialStateProperty.all(
+                        const BorderSide(width: 1, color: Color(0xFFF1F3F5)),
+                      ),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(width),
+                      )),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                    ),
+              child: Text(
+                keys[index - 1],
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: isActive
+                        ? Colors.white
+                        : Theme.of(context).primaryColor),
+              ),
+            ),
+          );
+        });
   }
 }
 
