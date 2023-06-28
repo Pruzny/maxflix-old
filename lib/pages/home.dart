@@ -98,6 +98,12 @@ class _HomeState extends State<Home> {
                                           movieHelper.page = 1;
                                         });
                                       });
+                                    } else if (value.isEmpty) {
+                                      _debounce!.cancel();
+                                      setState(() {
+                                        movieHelper.name = "";
+                                        movieHelper.page = 1;
+                                      });
                                     }
                                   },
                                   backgroundColor: MaterialStateProperty.all(
