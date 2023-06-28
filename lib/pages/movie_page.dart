@@ -27,12 +27,23 @@ class _MoviePageState extends State<MoviePage> {
     final averageFormat = NumberFormat.decimalPatternDigits(decimalDigits: 1);
 
     return Scaffold(
-      floatingActionButton: Padding(
+      floatingActionButton: Container(
         padding: const EdgeInsets.only(top: 16),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              offset: const Offset(0, 10),
+              spreadRadius: -10,
+              blurRadius: 10,
+            ),
+          ],
+        ),
         child: FloatingActionButton.extended(
             onPressed: () {
               Navigator.pop(context);
             },
+            elevation: 0,
             backgroundColor: Colors.white,
             label: const Text(
               "Voltar",
