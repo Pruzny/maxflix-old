@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:maxflix/helper/movie_helper.dart';
 import 'package:maxflix/model/movie.dart';
 import 'package:maxflix/pages/movie_page.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -219,6 +220,15 @@ class _HomeState extends State<Home> {
                                                 cacheManager:
                                                     movieHelper.cacheManager,
                                                 fit: BoxFit.fill,
+                                                placeholder: (context, text) {
+                                                  return Shimmer.fromColors(
+                                                    baseColor: Colors.white,
+                                                    highlightColor: const Color(0xFF868E96),
+                                                    child: Container(
+                                                      color: Colors.white,
+                                                    ),
+                                                  );
+                                                },
                                               )
                                             : Container(
                                                 color: Colors.black,
