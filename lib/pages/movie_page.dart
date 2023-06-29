@@ -27,12 +27,23 @@ class _MoviePageState extends State<MoviePage> {
     final averageFormat = NumberFormat.decimalPatternDigits(decimalDigits: 1);
 
     return Scaffold(
-      floatingActionButton: Padding(
+      floatingActionButton: Container(
         padding: const EdgeInsets.only(top: 16),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              offset: const Offset(0, 10),
+              spreadRadius: -10,
+              blurRadius: 10,
+            ),
+          ],
+        ),
         child: FloatingActionButton.extended(
             onPressed: () {
               Navigator.pop(context);
             },
+            elevation: 0,
             backgroundColor: Colors.white,
             label: const Text(
               "Voltar",
@@ -156,6 +167,7 @@ class _MoviePageState extends State<MoviePage> {
                           Padding(padding: EdgeInsets.all(height * 0.015)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 "Título original: ",
@@ -171,7 +183,6 @@ class _MoviePageState extends State<MoviePage> {
                                 child: Text(
                                   movie.originalTitle,
                                   style: TextStyle(
-                                    overflow: TextOverflow.ellipsis,
                                     fontSize: width * 0.035,
                                     fontWeight: FontWeight.w500,
                                     color: const Color(0xFF5E6770),
